@@ -35,10 +35,12 @@ routes = {
 
 def handle_request(url):
     try:
-        response = routes[url]
-        return f"200 OK: {response}"
-    except KeyError:
-        return "404 Not Found"
+        if (response := routes.get(url)) is not None:
+            return f"200 OK: {response}"
+        else:
+            return "404 Not Found"
+    except Exception:
+        return "500 Internal Server Error"
 
 print(handle_request("/"))
 print(handle_request("/missing"))

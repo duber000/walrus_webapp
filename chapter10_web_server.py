@@ -11,11 +11,11 @@ routes = {
 
 class SimpleHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        response = routes.get(self.path, "404 Not Found")
-        if response == "404 Not Found":
-            self.send_response(404)
-        else:
+        if (response := routes.get(self.path)) is not None:
             self.send_response(200)
+        else:
+            response = "404 Not Found"
+            self.send_response(404)
         self.send_header("Content-type", "text/plain")
         self.end_headers()
         self.wfile.write(response.encode())

@@ -99,8 +99,8 @@ routes = {
     "/about": "about page"
 }
 
-if request_url in routes:
-    print(f"200 OK: {routes[request_url]}")
+if (response := routes.get(request_url)) is not None:
+    print(f"200 OK: {response}")
 else:
     print("404 Not Found")
 

@@ -36,8 +36,8 @@ routes = {
 
 def handle_request(url):
     """Simulate handling a web request by URL."""
-    if url in routes:
-        return f"200 OK: {routes[url]}"
+    if (response := routes.get(url)) is not None:
+        return f"200 OK: {response}"
     else:
         return "404 Not Found"
 

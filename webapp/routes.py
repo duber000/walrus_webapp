@@ -84,10 +84,13 @@ routes['/user'] = user_info
 #     return ", ".join([u.username for u in users])
 
 def get_route(url):
-    handler = routes.get(url)
-    if callable(handler):
-        return handler()
-    return handler or '404 Not Found'
+    if (handler := routes.get(url)) is not None:
+        if callable(handler):
+            return handler()
+        else:
+            return handler
+    else:
+        return '404 Not Found'
 
 
 # --- Chapter 2 User Exercises ---

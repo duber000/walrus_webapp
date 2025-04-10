@@ -34,9 +34,15 @@ print("Product of numbers:", product_of_numbers)
 
 # --- Walrus operator (Python 3.8+) ---
 
-# Assign and test in one expression
+# The walrus operator := allows assignment inside expressions.
+# For example, assign and test in one line:
 if (n := len(numbers)) > 3:
     print(f"List has {n} elements, which is more than 3")
+
+# Another example: reading input until empty string
+# Uncomment to try:
+# while (line := input("Enter text (empty to stop): ")) != "":
+#     print("You entered:", line)
 
 # --- Mini Web Framework: Functional Routing ---
 
