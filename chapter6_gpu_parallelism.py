@@ -5,7 +5,6 @@
 
 from numba import cuda
 import numpy as np
-import math
 
 # --- Basic GPU Kernel ---
 
@@ -25,7 +24,7 @@ result = np.zeros(N, dtype=np.float32)
 
 # Define the number of threads per block and blocks per grid
 threads_per_block = 8
-blocks_per_grid = math.ceil(N / threads_per_block)
+blocks_per_grid = (N + threads_per_block - 1) // threads_per_block  # simple integer division
 
 # Launch the kernel on the GPU
 add_arrays_kernel[blocks_per_grid, threads_per_block](a, b, result)
@@ -56,7 +55,7 @@ def gpu_sum_route():
     result = np.zeros(N, dtype=np.float32)
 
     threads_per_block = 8
-    blocks_per_grid = math.ceil(N / threads_per_block)
+    blocks_per_grid = (N + threads_per_block - 1) // threads_per_block  # simple integer division
 
     add_arrays_kernel[blocks_per_grid, threads_per_block](a, b, result)
 
