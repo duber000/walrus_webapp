@@ -14,11 +14,16 @@ def start_sync_server(host="0.0.0.0", port=8000):
     """
     class RequestHandler(BaseHTTPRequestHandler):
         def do_GET(self):
-            response = get_route(self.path)
-            self.send_response(200 if response != '404 Not Found' else 404)
-            self.send_header("Content-type", "text/plain")
-            self.end_headers()
-            self.wfile.write(response.encode())
+            if (response := get_route(self.path)) is not None:
+                self.send_response(200 if response != '404 Not Found' else 404)
+                self.send_header("Content-type", "text/plain")
+                self.end_headers()
+                self.wfile.write(response.encode())
+            else:
+                self.send_response(404)
+                self.send_header("Content-type", "text/plain")
+                self.end_headers()
+                self.wfile.write(b"404 Not Found")
 
     server = HTTPServer((host, port), RequestHandler)
     print(f"Starting sync server on http://{host}:{port}")
@@ -51,8 +56,11 @@ async def app(scope, receive, send):
     assert scope["type"] == "http"
     path = scope["path"]
 
-    response_text = get_route(path)
-    status_code = 200 if response_text != '404 Not Found' else 404
+    if (response_text := get_route(path)) is not None:
+        status_code = 200 if response_text != '404 Not Found' else 404
+    else:
+        response_text = '404 Not Found'
+        status_code = 404
 
     headers = [(b"content-type", b"text/plain")]
 

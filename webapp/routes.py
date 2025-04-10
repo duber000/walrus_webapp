@@ -100,11 +100,9 @@ async def predict_route_async(scope, receive, send):
 
     # Wait for request body
     body = b""
-    more_body = True
-    while more_body:
-        message = await receive()
+    while (message := await receive()).get("more_body", False):
         body += message.get("body", b"")
-        more_body = message.get("more_body", False)
+    body += message.get("body", b"")
 
     try:
         data = json.loads(body.decode())
@@ -207,11 +205,9 @@ async def create_post_async_route(scope, receive, send):
 
     # Read request body
     body_bytes = b""
-    more_body = True
-    while more_body:
-        message = await receive()
+    while (message := await receive()).get("more_body", False):
         body_bytes += message.get("body", b"")
-        more_body = message.get("more_body", False)
+    body_bytes += message.get("body", b"")
 
     try:
         data = _json.loads(body_bytes.decode())
