@@ -43,6 +43,23 @@ def handle_request(url):
 print(handle_request("/"))
 print(handle_request("/missing"))
 
+# --- Error Handling with Tortoise ORM queries (sync style) ---
+
+print("\n--- Simulated DB query with error handling ---")
+
+try:
+    # This is just a placeholder; real query will be async later
+    username = "bob"
+    # Imagine: user = await User.get(username=username)
+    user = None  # Simulate not found
+    if user is None:
+        raise LookupError("User not found")
+    print("User found:", user)
+except LookupError as e:
+    print("Error:", e)
+
+# We'll do real async DB queries in the async chapter!
+
 # --- Exercises ---
 
 # Exercise 1:

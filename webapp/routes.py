@@ -77,6 +77,12 @@ routes['/user'] = user_info
 
 # Chapter 10: Web Server - no new route, but this file is used by the server
 
+# Placeholder for future async routes (Chapter 12)
+# Example:
+# async def async_users_route():
+#     users = await User.all()
+#     return ", ".join([u.username for u in users])
+
 def get_route(url):
     handler = routes.get(url)
     if callable(handler):
