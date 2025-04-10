@@ -3,6 +3,27 @@
 ## Purpose
 Step by step plan for learning Python, broken into incremental chapters. Each chapter builds on the previous, culminating in a web framework that heavily uses functional programming, multithreading, and GPU parallelism.
 
+## Setup
+
+This project uses several third-party libraries for async programming, GPU acceleration, templating, and validation.
+
+### Install dependencies
+
+```bash
+pip install tortoise-orm numba numpy jinja2 pydantic uvicorn
+```
+
+- **tortoise-orm**: async ORM for database models
+- **numba**: JIT compiler for Python, used for GPU acceleration
+- **numpy**: numerical arrays, used with Numba
+- **jinja2**: HTML templating engine
+- **pydantic**: data validation and parsing
+- **uvicorn**: ASGI server for running async web apps
+
+Alternatively, you can add these to your `pyproject.toml` or `requirements.txt`.
+
+---
+
 ## Learning Path & Branching Strategy
 
 ### How to use this repository
