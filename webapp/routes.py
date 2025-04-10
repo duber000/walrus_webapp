@@ -83,14 +83,67 @@ routes['/user'] = user_info
 #     users = await User.all()
 #     return ", ".join([u.username for u in users])
 
+# --- Chapter 18: PyTorch Integration ---
+
+import json
+from webapp.torch_model import predict_async
+
+async def predict_route_async(scope, receive, send):
+    """
+    ASGI-compatible async route handler for PyTorch inference.
+
+    Expects POST request with JSON body: {"x": float}
+
+    Responds with JSON: {"input": x, "output": y}
+    """
+    assert scope["type"] == "http"
+
+    # Wait for request body
+    body = b""
+    more_body = True
+    while more_body:
+        message = await receive()
+        body += message.get("body", b"")
+        more_body = message.get("more_body", False)
+
+    try:
+        data = json.loads(body.decode())
+        x_value = float(data.get("x", 3.0))
+    except Exception:
+        x_value = 3.0
+
+    y_value = await predict_async(x_value)
+
+    response_data = {
+        "input": x_value,
+        "output": y_value
+    }
+    response_body = json.dumps(response_data).encode()
+
+    headers = [(b"content-type", b"application/json")]
+
+    await send({
+        "type": "http.response.start",
+        "status": 200,
+        "headers": headers
+    })
+    await send({
+        "type": "http.response.body",
+        "body": response_body
+    })
+
+# Register the async route under a special key
+routes['/predict'] = predict_route_async
+
 def get_route(url):
-    if (handler := routes.get(url)) is not None:
-        if callable(handler):
-            return handler()
-        else:
-            return handler
-    else:
-        return '404 Not Found'
+    """
+    Synchronous route resolver for simple routes.
+
+    Returns:
+        str or callable: response string or async ASGI app.
+    """
+    handler = routes.get(url)
+    return handler if handler is not None else '404 Not Found'
 
 
 # --- Chapter 2 User Exercises ---
