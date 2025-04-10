@@ -49,7 +49,7 @@ uv run -- uvicorn webapp.server:app --reload
 
 ---
 
-## Why "Walrus Operator"?
+## Why "Walrus Framework"?
 
-Because this project **embraces** Python's assignment expression (`:=`) everywhere — in routing, async loops, API calls, and more — making code concise, expressive, and modern.
+Because this project **embraces** Python's assignment expression (`:=`) everywhere — in routing, async loops, API calls, and more 
 
