@@ -51,9 +51,10 @@ async def fetch_users_async():
     """
     url = "https://jsonplaceholder.typicode.com/users"
     async with httpx.AsyncClient() as client:
-        response = await client.get(url)
-        response.raise_for_status()
-        return response.json()
+        if (resp := await client.get(url)).status_code == 200:
+            return resp.json()
+        else:
+            resp.raise_for_status()
 
 async def create_post_async(title, body, user_id):
     """

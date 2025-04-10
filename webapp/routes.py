@@ -46,7 +46,10 @@ routes['/gpu-demo'] = gpu_demo
 def file_content():
     try:
         with open("output.txt", "r") as f:
-            return f.read()
+            if (content := f.read()) != "":
+                return content
+            else:
+                return "File is empty"
     except FileNotFoundError:
         return "File not found."
 
