@@ -77,7 +77,7 @@ async def app(scope, receive, send):
 if __name__ == "__main__":
     walrus_art = r"""
          __         __
-        /  \.-"""-./  \
+        /  \.-\"\"\"-./  \
         \    -   -    /
          |   o   o   |
          \  .-'''-.  /
