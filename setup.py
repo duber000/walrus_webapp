@@ -47,6 +47,8 @@ setup(
     description="Incremental Python learning project culminating in a web framework",
     author="Your Name",
     author_email="your@email.com",
-    install_requires=[],
+    install_requires=[
+        "tortoise-orm>=0.20.0"
+    ],
     python_requires=">=3.7",
 )
