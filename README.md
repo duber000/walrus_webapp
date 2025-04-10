@@ -46,7 +46,7 @@ uv sync
 Run any script or command inside the project environment:
 
 ```bash
-uv run python webapp/server.py
+uv run webapp/server.py
 ```
 
 Or, for example, to start the ASGI server with uvicorn:
@@ -138,11 +138,4 @@ curl -X POST -H "Content-Type: application/json" -d '{"title":"Test","body":"Hel
 - Dependencies are declared in **pyproject.toml** and locked in **uv.lock**.
 - Use `uv add` to add packages, `uv run` to run commands, and `uv build` to build distributions.
 - The project builds a Python learning path culminating in a mini async web framework with GPU acceleration and API integration.
-
----
-
-## Resources
-
-- [uv documentation](https://github.com/astral-sh/uv)
-- [PEP 621 pyproject.toml guide](https://packaging.python.org/en/latest/specifications/declaring-project-metadata/)
 
