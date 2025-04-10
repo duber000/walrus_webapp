@@ -47,3 +47,17 @@ print("Nothing:", nothing)
 
 # Exercise 3:
 # Create a dictionary with keys 'first_name' and 'last_name' and your own values, then print it.
+
+# --- Mini Web Framework Start ---
+
+# In this course, we'll build a simple web framework step by step.
+# For now, let's just define a dictionary to hold our "routes".
+
+routes = {
+    "/": "home page",
+    "/about": "about page"
+}
+
+print("Available routes:", routes)
+
+# We'll add more functionality in the next chapters!

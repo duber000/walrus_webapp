@@ -75,3 +75,21 @@ for i in range(10):
 
 # Exercise 3:
 # Write a program that asks the user to enter numbers repeatedly until they enter 0, then prints the sum of all entered numbers.
+
+# --- Mini Web Framework: Routing Logic ---
+
+# Let's simulate a simple request URL
+request_url = "/about"
+
+# Check if the URL exists in our routes dictionary (defined in Chapter 1)
+routes = {
+    "/": "home page",
+    "/about": "about page"
+}
+
+if request_url in routes:
+    print(f"200 OK: {routes[request_url]}")
+else:
+    print("404 Not Found")
+
+# In the next chapters, we'll turn this into real functions and add more features!
