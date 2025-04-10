@@ -22,6 +22,11 @@ Step by step plan for learning Python, broken into incremental chapters. Each ch
 | **Chapter 4: Functional Programming** | [`chapter4-functional-programming`](https://github.com/yourrepo/tree/chapter4-functional-programming) | Learn about map, filter, reduce, lambdas, and the Walrus operator. |
 | **Chapter 5: Multithreading** | [`chapter5-multithreading`](https://github.com/yourrepo/tree/chapter5-multithreading) | Learn how to write multithreaded Python programs. |
 | **Chapter 6: GPU Parallelism** | [`chapter6-gpu-parallelism`](https://github.com/yourrepo/tree/chapter6-gpu-parallelism) | Learn how to leverage GPU acceleration for parallel computing. |
+| **Chapter 7: Modules and File I/O** | [`chapter7-modules-fileio`](https://github.com/yourrepo/tree/chapter7-modules-fileio) | Learn how to organize code into modules and read/write files. |
+| **Chapter 8: Error Handling** | [`chapter8-error-handling`](https://github.com/yourrepo/tree/chapter8-error-handling) | Learn how to handle errors and exceptions in Python. |
+| **Chapter 9: Object-Oriented Programming** | [`chapter9-oop`](https://github.com/yourrepo/tree/chapter9-oop) | Learn about classes, objects, and OOP concepts. |
+| **Chapter 10: Building a Real Web Server** | [`chapter10-web-server`](https://github.com/yourrepo/tree/chapter10-web-server) | Learn how to build a simple HTTP server in Python. |
+| **Chapter 11: Testing and Debugging** | [`chapter11-testing`](https://github.com/yourrepo/tree/chapter11-testing) | Learn how to write tests and debug Python code. |
 
 ---
 
