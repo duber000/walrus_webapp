@@ -79,3 +79,55 @@ print(handle_request("/missing"))
 # Congratulations! You've reached the final chapter of this course.
 # You now have a basic web framework that uses variables, control flow, functions, functional programming,
 # multithreading, and GPU acceleration!
+
+# --- Save user exercises to webapp/routes.py ---
+
+def save_exercises_to_webapp():
+    exercises_code = "\n# --- Chapter 6 User Exercises ---\n"
+
+    # Exercise 1: GPU multiply kernel (simulate output)
+    exercises_code += (
+        "def exercise6_1():\n"
+        "    return 'GPU multiplied arrays'\n\n"
+    )
+
+    # Exercise 2: new GPU route (simulate output)
+    exercises_code += (
+        "def exercise6_2():\n"
+        "    return 'GPU multiplication route added'\n\n"
+    )
+
+    # Exercise 3: benchmark results (simulate output)
+    exercises_code += (
+        "def exercise6_3():\n"
+        "    return 'GPU sum faster than CPU sum'\n\n"
+    )
+
+    # Append or update the exercises in webapp/routes.py
+    with open("webapp/routes.py", "r") as f:
+        content = f.read()
+
+    marker = "# --- Chapter 6 User Exercises ---"
+    if marker in content:
+        pre = content.split(marker)[0]
+        post = content.split(marker)[-1]
+        post_lines = post.splitlines()
+        idx = 0
+        for i, line in enumerate(post_lines):
+            if line.strip().startswith("# ---"):
+                idx = i
+                break
+        else:
+            idx = len(post_lines)
+        post = "\n".join(post_lines[idx:])
+        new_content = pre + exercises_code + post
+    else:
+        new_content = content + "\n" + exercises_code
+
+    with open("webapp/routes.py", "w") as f:
+        f.write(new_content)
+
+    print("Saved your Chapter 6 exercises to webapp/routes.py!")
+
+if __name__ == "__main__":
+    save_exercises_to_webapp()
