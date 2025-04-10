@@ -83,8 +83,7 @@ class App:
         self.routes[url] = handler
 
     def handle_request(self, request):
-        handler = self.routes.get(request.url)
-        if handler:
+        if (handler := self.routes.get(request.url)):
             return Response(handler())
         else:
             return Response("Not Found", status=404)

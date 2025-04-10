@@ -106,9 +106,11 @@ async def async_user_list():
     """
     Example async route handler that returns a comma-separated list of usernames.
     """
-    users = await User.all()
-    dtos = [UserDTO.from_model(u) for u in users]
-    return ", ".join([dto.username for dto in dtos])
+    if (users := await User.all()):
+        dtos = [UserDTO.from_model(u) for u in users]
+        return ", ".join([dto.username for dto in dtos])
+    else:
+        return "No users found."
 
 print("\n--- Async ORM integration complete! ---")
 

@@ -22,8 +22,7 @@ def post_detail(slug):
 
 def handle_request(path):
     for pattern, handler in routes.items():
-        match = re.match(pattern, path)
-        if match:
+        if (match := re.match(pattern, path)):
             return handler(**match.groupdict())
     return "404 Not Found"
 

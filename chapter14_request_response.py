@@ -30,9 +30,9 @@ def logging_middleware(request: Request, next_handler):
     return response
 
 def simple_handler(request: Request) -> Response:
-    if request.path == "/":
+    if (path := request.path) == "/":
         return Response("Home page")
-    elif request.path == "/hello":
+    elif path == "/hello":
         return Response("Hello world!")
     else:
         return Response("Not Found", status=404)
