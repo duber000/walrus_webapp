@@ -75,4 +75,15 @@ async def app(scope, receive, send):
     })
 
 if __name__ == "__main__":
+    walrus_art = r"""
+         __         __
+        /  \.-"""-./  \
+        \    -   -    /
+         |   o   o   |
+         \  .-'''-.  /
+          '-\__Y__/-'
+             `---`
+    """
+    print(walrus_art)
+    print("Welcome to the Walrus Operator Web Framework!")
     start_server()
