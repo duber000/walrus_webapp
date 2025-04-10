@@ -22,6 +22,8 @@ Step by step plan for learning Python, broken into incremental chapters. Each ch
 | **Chapter 4: Functional Programming** | [`chapter4-functional-programming`](https://github.com/yourrepo/tree/chapter4-functional-programming) | Learn about map, filter, reduce, lambdas, and the Walrus operator. |
 | **Chapter 5: Multithreading** | [`chapter5-multithreading`](https://github.com/yourrepo/tree/chapter5-multithreading) | Learn how to write multithreaded Python programs. |
 | **Chapter 6: GPU Parallelism** | [`chapter6-gpu-parallelism`](https://github.com/yourrepo/tree/chapter6-gpu-parallelism) | Learn how to leverage GPU acceleration for parallel computing. |
+| **Chapter 5: Multithreading** | [`chapter5-multithreading`](https://github.com/yourrepo/tree/chapter5-multithreading) | Learn how to write multithreaded Python programs. |
+| **Chapter 6: GPU Parallelism** | [`chapter6-gpu-parallelism`](https://github.com/yourrepo/tree/chapter6-gpu-parallelism) | Learn how to leverage GPU acceleration for parallel computing. |
 
 ---
 
