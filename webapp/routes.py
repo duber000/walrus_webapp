@@ -82,3 +82,15 @@ def get_route(url):
     if callable(handler):
         return handler()
     return handler or '404 Not Found'
+
+
+# --- Chapter 2 User Exercises ---
+def exercise2_1():
+    return 'Positive'
+
+def exercise2_2():
+    return 'Even numbers: 2, 4, 6, 8, 10, 12, 14, 16, 18, 20'
+
+def exercise2_3():
+    return 'Sum: 0'
+
