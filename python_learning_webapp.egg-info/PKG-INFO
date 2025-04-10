@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: python-learning-webapp
+Version: 0.1
+Summary: Incremental Python learning project culminating in a web framework
+Author: Your Name
+Author-email: your@email.com
+Requires-Python: >=3.7
+Dynamic: author
+Dynamic: author-email
+Dynamic: requires-python
+Dynamic: summary
