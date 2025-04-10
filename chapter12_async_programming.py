@@ -113,3 +113,14 @@ async def async_user_list():
 print("\n--- Async ORM integration complete! ---")
 
 # In the next chapters, you can add async routes to your web server.
+
+# --- Beginner Async Exercises ---
+
+# Exercise 1:
+# Write an async function that waits 2 seconds and then prints "Done waiting".
+
+# Exercise 2:
+# Modify `create_and_query_users()` to create multiple users asynchronously in a loop.
+
+# Exercise 3:
+# Write an async function that fetches data from two APIs concurrently using asyncio.gather().

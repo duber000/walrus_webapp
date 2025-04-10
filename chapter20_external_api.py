@@ -54,3 +54,14 @@ async def external_users_route_async(scope, receive, send):
 
 # Exercise 3:
 # Integrate this API call into your web framework with a new ASGI route.
+
+# --- Beginner Async Exercises ---
+
+# Exercise 4:
+# Write an async function that fetches two different URLs concurrently and prints their status codes.
+
+# Exercise 5:
+# Add error handling to your async API calls to print a friendly message if the request fails.
+
+# Exercise 6:
+# Create an async function that retries a failed API call up to 3 times with a delay.

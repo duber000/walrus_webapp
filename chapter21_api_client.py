@@ -106,3 +106,14 @@ if __name__ == "__main__":
 
 # Exercise 3:
 # Integrate these API calls into your web framework routes.
+
+# --- Beginner Async Exercises ---
+
+# Exercise 4:
+# Write an async function that fetches multiple user lists concurrently using asyncio.gather().
+
+# Exercise 5:
+# Add timeout handling to your async API calls with httpx.
+
+# Exercise 6:
+# Create an async function that posts multiple new posts concurrently and collects their responses.
