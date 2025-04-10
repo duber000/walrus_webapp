@@ -9,22 +9,25 @@ import math
 
 # --- Basic GPU Kernel ---
 
+# This is a CUDA kernel function that runs on the GPU.
+# It adds two arrays element-wise in parallel.
 @cuda.jit
 def add_arrays_kernel(a, b, result):
-    idx = cuda.grid(1)
+    idx = cuda.grid(1)  # Get the absolute thread index within the grid
     if idx < a.size:
         result[idx] = a[idx] + b[idx]
 
-# Prepare data
+# Prepare data on the host (CPU)
 N = 32
 a = np.arange(N, dtype=np.float32)
 b = np.arange(N, dtype=np.float32)
 result = np.zeros(N, dtype=np.float32)
 
+# Define the number of threads per block and blocks per grid
 threads_per_block = 8
 blocks_per_grid = math.ceil(N / threads_per_block)
 
-# Launch kernel
+# Launch the kernel on the GPU
 add_arrays_kernel[blocks_per_grid, threads_per_block](a, b, result)
 
 print("Array A:", a)
@@ -41,7 +44,12 @@ routes = {
 }
 
 def gpu_sum_route():
-    """Simulate a GPU-accelerated computation as a web response."""
+    """
+    Simulate a GPU-accelerated computation as a web response.
+
+    This function prepares two arrays, runs the GPU kernel to add them,
+    and returns the result as a string.
+    """
     N = 16
     a = np.arange(N, dtype=np.float32)
     b = np.arange(N, dtype=np.float32)
@@ -55,7 +63,15 @@ def gpu_sum_route():
     return f"GPU sum result: {result.tolist()}"
 
 def handle_request(url):
-    """Call the route handler function if it exists."""
+    """
+    Call the route handler function if it exists.
+
+    Args:
+        url (str): The request URL.
+
+    Returns:
+        str: The HTTP response string.
+    """
     if (handler := routes.get(url)) is not None:
         return f"200 OK: {handler()}"
     else:
