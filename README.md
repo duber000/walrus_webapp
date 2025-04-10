@@ -27,6 +27,29 @@ Alternatively, you can add these to your `pyproject.toml` or `requirements.txt`.
 
 ---
 
+## API Client Chapter
+
+### Chapter 21: Consuming External APIs
+
+Learn how to read from and write to external APIs using:
+
+- **requests** (sync)
+- **httpx** (async)
+
+Example routes:
+
+- `GET /external-users-sync` — fetch users synchronously
+- `GET /external-users-async` — fetch users asynchronously
+- `POST /create-post-async` — create a post asynchronously (send JSON: `{"title": "...", "body": "...", "userId": 1}`)
+
+Test with:
+
+```bash
+curl http://localhost:8000/external-users-sync
+curl http://localhost:8000/external-users-async
+curl -X POST -H "Content-Type: application/json" -d '{"title":"Test","body":"Hello","userId":1}' http://localhost:8000/create-post-async
+```
+
 ## Learning Path & Branching Strategy
 
 ### How to use this repository

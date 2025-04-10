@@ -196,3 +196,82 @@ async def external_users_route_async(scope, receive, send):
 
 routes['/external-users'] = external_users_route_async
 
+
+# --- Chapter 21: API Client Integration ---
+
+import json as _json
+import asyncio as _asyncio
+
+from chapter21_api_client import fetch_users_sync, create_post_sync, fetch_users_async, create_post_async
+
+def external_users_sync():
+    """
+    Synchronous route that fetches users from an external API.
+    """
+    users = fetch_users_sync()
+    return _json.dumps(users)
+
+routes['/external-users-sync'] = external_users_sync
+
+async def external_users_async_route(scope, receive, send):
+    """
+    ASGI async route that fetches users from an external API asynchronously.
+    """
+    users = await fetch_users_async()
+    body = _json.dumps(users).encode()
+
+    headers = [(b"content-type", b"application/json")]
+
+    await send({
+        "type": "http.response.start",
+        "status": 200,
+        "headers": headers
+    })
+    await send({
+        "type": "http.response.body",
+        "body": body
+    })
+
+routes['/external-users-async'] = external_users_async_route
+
+async def create_post_async_route(scope, receive, send):
+    """
+    ASGI async route that accepts POST JSON input and creates a post via external API.
+    """
+    assert scope["type"] == "http"
+
+    # Read request body
+    body_bytes = b""
+    more_body = True
+    while more_body:
+        message = await receive()
+        body_bytes += message.get("body", b"")
+        more_body = message.get("more_body", False)
+
+    try:
+        data = _json.loads(body_bytes.decode())
+        title = data.get("title", "Untitled")
+        body = data.get("body", "")
+        user_id = int(data.get("userId", 1))
+    except Exception:
+        title = "Untitled"
+        body = ""
+        user_id = 1
+
+    post = await create_post_async(title, body, user_id)
+    response_body = _json.dumps(post).encode()
+
+    headers = [(b"content-type", b"application/json")]
+
+    await send({
+        "type": "http.response.start",
+        "status": 201,
+        "headers": headers
+    })
+    await send({
+        "type": "http.response.body",
+        "body": response_body
+    })
+
+routes['/create-post-async'] = create_post_async_route
+
