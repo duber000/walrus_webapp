@@ -4,6 +4,7 @@
 # lambdas, map, filter, reduce, and the Walrus operator (:=)
 
 from functools import reduce
+import math
 
 # --- Lambda functions ---
 
@@ -25,6 +26,11 @@ print("Even numbers:", even_numbers)
 
 sum_of_numbers = reduce(lambda x, y: x + y, numbers)
 print("Sum of numbers:", sum_of_numbers)
+
+# --- math.prod() (Python 3.8+) ---
+
+product_of_numbers = math.prod(numbers)
+print("Product of numbers:", product_of_numbers)
 
 # --- Walrus operator (Python 3.8+) ---
 

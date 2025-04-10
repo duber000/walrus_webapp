@@ -14,6 +14,11 @@ print("Height in meters:", height)
 name = "Alice"
 print("Name:", name)
 
+# New string methods (Python 3.9+)
+filename = "test_file.txt"
+print("Remove prefix:", filename.removeprefix("test_"))
+print("Remove suffix:", filename.removesuffix(".txt"))
+
 # Boolean
 is_student = True
 print("Is a student:", is_student)

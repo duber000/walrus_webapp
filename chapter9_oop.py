@@ -2,6 +2,19 @@
 
 # This chapter introduces classes, objects, methods, and inheritance.
 
+# --- Data Classes (Python 3.7+) ---
+
+from dataclasses import dataclass
+
+@dataclass
+class User:
+    username: str
+    email: str
+    is_active: bool = True
+
+u = User("alice", "alice@example.com")
+print(u)
+
 # --- Basic class ---
 
 class Person:

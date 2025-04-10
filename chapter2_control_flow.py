@@ -38,6 +38,18 @@ elif not is_raining and is_cold:
 else:
     print("Enjoy the weather!")
 
+# --- Pattern Matching (Python 3.10+) ---
+
+command = "start"
+
+match command:
+    case "start":
+        print("Starting...")
+    case "stop":
+        print("Stopping...")
+    case _:
+        print("Unknown command")
+
 # --- Loops ---
 
 # While loop

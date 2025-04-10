@@ -27,8 +27,8 @@ if __name__ == "__main__":
 # --- Debugging tips ---
 
 # Use print() statements to trace values.
-# Use breakpoints in IDEs or pdb module:
-# import pdb; pdb.set_trace()
+# Use the built-in breakpoint() function (Python 3.7+):
+breakpoint()
 
 # --- Exercises ---
 
@@ -36,7 +36,7 @@ if __name__ == "__main__":
 # Write tests for your mini web framework's request handler.
 
 # Exercise 2:
-# Intentionally introduce a bug and debug it using print or pdb.
+# Intentionally introduce a bug and debug it using print or breakpoint().
 
 # Exercise 3:
 # Explore pytest and write some tests with it.
