@@ -18,7 +18,8 @@ else:
 
 number = 7
 
-if number % 2 == 0:
+# Using walrus operator to assign and check parity
+if (is_even := (number % 2 == 0)):
     print("Even number")
 else:
     print("Odd number")
@@ -29,7 +30,8 @@ else:
 is_raining = False
 is_cold = True
 
-if is_raining and is_cold:
+# Using walrus to assign combined condition
+if (rain_and_cold := is_raining and is_cold):
     print("Wear a raincoat and a sweater.")
 elif is_raining and not is_cold:
     print("Wear a raincoat.")
