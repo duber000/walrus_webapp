@@ -10,7 +10,7 @@ This project uses several third-party libraries for async programming, GPU accel
 ### Install dependencies
 
 ```bash
-pip install tortoise-orm numba numpy jinja2 pydantic uvicorn torch
+pip install tortoise-orm numba numpy jinja2 pydantic uvicorn torch httpx requests
 ```
 
 - **tortoise-orm**: async ORM for database models
@@ -20,6 +20,8 @@ pip install tortoise-orm numba numpy jinja2 pydantic uvicorn torch
 - **pydantic**: data validation and parsing
 - **uvicorn**: ASGI server for running async web apps
 - **torch**: PyTorch deep learning framework, used for ML inference
+- **httpx**: async HTTP client for calling external APIs
+- **requests**: synchronous HTTP client for calling external APIs
 
 Alternatively, you can add these to your `pyproject.toml` or `requirements.txt`.
 

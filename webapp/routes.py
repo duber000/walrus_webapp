@@ -156,3 +156,43 @@ def exercise2_2():
 def exercise2_3():
     return 'Sum: 0'
 
+
+# --- Chapter 20: Consuming External APIs ---
+
+import httpx
+
+async def fetch_users_async():
+    """
+    Fetch users from an external API asynchronously.
+
+    Returns:
+        list: List of user dicts.
+    """
+    url = "https://jsonplaceholder.typicode.com/users"
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url)
+        response.raise_for_status()
+        return response.json()
+
+async def external_users_route_async(scope, receive, send):
+    """
+    ASGI route handler that fetches users from an external API and returns JSON response.
+    """
+    users = await fetch_users_async()
+    import json
+    body = json.dumps(users).encode()
+
+    headers = [(b"content-type", b"application/json")]
+
+    await send({
+        "type": "http.response.start",
+        "status": 200,
+        "headers": headers
+    })
+    await send({
+        "type": "http.response.body",
+        "body": body
+    })
+
+routes['/external-users'] = external_users_route_async
+
