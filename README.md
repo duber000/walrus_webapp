@@ -2,7 +2,36 @@
 
 ## Purpose
 
-Step by step plan for learning Python, broken into incremental chapters. Each chapter builds on the previous, culminating in a web framework that heavily uses functional programming, multithreading, GPU parallelism, async programming, and API integration.
+A step-by-step plan for learning Python, broken into incremental chapters. Each chapter builds on the previous, culminating in a web framework that heavily uses functional programming, multithreading, GPU parallelism, async programming, and API integration — all while showcasing the walrus operator (`:=`).
+
+---
+
+## Chapter Overview
+
+| Chapter | Topic | Description |
+|---------|----------------------------|--------------------------------------------------------------|
+| **1**   | Variables & Data Types    | Introduces Python variables, strings, numbers, lists, dicts, sets, and basic printing. |
+| **2**   | Control Flow              | `if`, `elif`, `else`, loops, logical operators, pattern matching, and first use of the walrus operator. |
+| **3**   | Functions                 | Defining functions, parameters, return values, nested functions, and routing logic as functions. |
+| **4**   | Functional Programming    | Lambdas, `map`, `filter`, `reduce`, and more walrus operator examples. |
+| **5**   | Multithreading            | Using `threading` to handle multiple requests concurrently in the mini web framework. |
+| **6**   | GPU Parallelism           | Accelerate array computations with Numba and CUDA, and integrate GPU routes. |
+| **7**   | Modules & File I/O        | Organize code into modules, read/write files, and intro to ORM models. |
+| **8**   | Error Handling            | `try`/`except`, raising exceptions, graceful error handling in the framework. |
+| **9**   | Object-Oriented Programming | Classes, inheritance, dataclasses, and an OOP design for the framework. |
+| **10**  | Building a Web Server     | Create a simple HTTP server with `http.server` and route handling. |
+| **11**  | Testing & Debugging       | `assert`, `unittest`, debugging tips, and writing tests for the framework. |
+| **12**  | Async Programming & ORM   | `async`/`await`, event loops, async database access with Tortoise ORM. |
+| **13**  | HTTP, REST & JSON         | HTTP methods, status codes, REST API design, JSON serialization. |
+| **14**  | Requests, Responses, Middleware | Request/Response classes, middleware pattern, and chaining. |
+| **15**  | Routing & Decorators      | Dynamic routing with regex, decorators for route registration. |
+| **16**  | Security Essentials       | Input validation, password hashing, tokens, authorization, CORS. |
+| **17**  | Templates & Static Files  | Jinja2 templates, serving static files, and template inheritance. |
+| **18**  | Packaging & Deployment    | `pyproject.toml`, Docker, ASGI servers, deployment options. |
+| **19**  | Data Validation with Pydantic | Pydantic models for validation, nested models, serialization. |
+| **20**  | Async API Client          | Using `httpx` to fetch external APIs asynchronously, with ASGI integration. |
+| **21**  | Sync & Async API Clients  | Using `requests` and `httpx` for API calls, error handling, concurrency. |
+| **+**   | PyTorch Integration       | Async GPU inference with PyTorch, integrated into the web app. |
 
 ---
 
@@ -93,7 +122,24 @@ After setup, your project will look like:
 ├── chapter1_variables.py
 ├── chapter2_control_flow.py
 ├── chapter3_functions.py
-├── ... (other chapters)
+├── chapter4_functional_programming.py
+├── chapter5_multithreading.py
+├── chapter6_gpu_parallelism.py
+├── chapter7_modules_fileio.py
+├── chapter8_error_handling.py
+├── chapter9_oop.py
+├── chapter10_web_server.py
+├── chapter11_testing.py
+├── chapter12_async_programming.py
+├── chapter13_http_rest.py
+├── chapter14_request_response.py
+├── chapter15_routing_decorators.py
+├── chapter16_security.py
+├── chapter17_templates_static.py
+├── chapter18_packaging_deployment.py
+├── chapter19_pydantic_validation.py
+├── chapter20_external_api.py
+├── chapter21_api_client.py
 ```
 
 ---
@@ -137,5 +183,5 @@ curl -X POST -H "Content-Type: application/json" -d '{"title":"Test","body":"Hel
 - This project is managed with **uv**.
 - Dependencies are declared in **pyproject.toml** and locked in **uv.lock**.
 - Use `uv add` to add packages, `uv run` to run commands, and `uv build` to build distributions.
-- The project builds a Python learning path culminating in a mini async web framework with GPU acceleration and API integration.
+- The project builds a Python learning path culminating in a mini async web framework with GPU acceleration, API integration, and plenty of walrus operator usage!
 
