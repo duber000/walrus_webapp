@@ -4,7 +4,8 @@
 
 # --- Data Classes (Python 3.7+) ---
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace as dc_replace
+import copy
 
 @dataclass
 class User:
@@ -14,6 +15,25 @@ class User:
 
 u = User("alice", "alice@example.com")
 print(u)
+
+# --- Python 3.13+: copy.replace() for immutable objects ---
+
+@dataclass(frozen=True)
+class UserProfile:
+    username: str
+    email: str
+    python_version: str
+
+profile = UserProfile("alice", "alice@example.com", "3.12")
+print("Original profile:", profile)
+
+# Before Python 3.13, use dataclasses.replace()
+updated_profile = dc_replace(profile, python_version="3.13")
+print("Updated profile (old way):", updated_profile)
+
+# From Python 3.13, you can use copy.replace()
+updated_profile2 = copy.replace(profile, python_version="3.13")
+print("Updated profile (new way):", updated_profile2)
 
 # --- Basic class ---
 
