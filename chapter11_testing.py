@@ -2,6 +2,14 @@
 
 # This chapter introduces writing tests and debugging Python code.
 
+from dataclasses import dataclass
+
+@dataclass
+class TestResult:
+    name: str
+    passed: bool
+    message: str = ""
+
 # --- Using assert ---
 
 def add(a, b):
@@ -21,8 +29,26 @@ class TestMath(unittest.TestCase):
         self.assertEqual(add(2, 2), 4)
         self.assertEqual(add(-1, 1), 0)
 
+def run_simple_tests():
+    results = []
+    try:
+        assert add(2, 2) == 4
+        results.append(TestResult("add 2+2", True))
+    except AssertionError:
+        results.append(TestResult("add 2+2", False, "Expected 4"))
+
+    try:
+        assert add(-1, 1) == 0
+        results.append(TestResult("add -1+1", True))
+    except AssertionError:
+        results.append(TestResult("add -1+1", False, "Expected 0"))
+
+    for r in results:
+        print(f"Test '{r.name}': {'PASSED' if r.passed else 'FAILED'} {r.message}")
+
 if __name__ == "__main__":
     unittest.main()
+    run_simple_tests()
 
 # --- Debugging tips ---
 

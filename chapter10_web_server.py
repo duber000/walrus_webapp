@@ -3,6 +3,13 @@
 # This chapter introduces building a simple HTTP server using Python's built-in modules.
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from dataclasses import dataclass
+
+@dataclass
+class RouteInfo:
+    path: str
+    content: str
+    status: int = 200
 
 routes = {
     "/": "home page",
@@ -11,14 +18,14 @@ routes = {
 
 class SimpleHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        if (response := routes.get(self.path)) is not None:
-            self.send_response(200)
+        if (content := routes.get(self.path)) is not None:
+            route_info = RouteInfo(path=self.path, content=content, status=200)
         else:
-            response = "404 Not Found"
-            self.send_response(404)
+            route_info = RouteInfo(path=self.path, content="404 Not Found", status=404)
+        self.send_response(route_info.status)
         self.send_header("Content-type", "text/plain")
         self.end_headers()
-        self.wfile.write(response.encode())
+        self.wfile.write(route_info.content.encode())
 
 def run(server_class=HTTPServer, handler_class=SimpleHandler, port=8000):
     server_address = ('', port)

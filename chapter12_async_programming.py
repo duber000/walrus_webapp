@@ -3,6 +3,7 @@
 # This chapter introduces async/await, event loops, and async database access with Tortoise ORM.
 
 import asyncio
+from dataclasses import dataclass
 from tortoise import Tortoise, fields, models
 
 # --- Async Basics ---
@@ -25,6 +26,22 @@ class User(models.Model):
     def __str__(self):
         return self.username
 
+@dataclass
+class UserDTO:
+    id: int
+    username: str
+    email: str
+    is_active: bool
+
+    @classmethod
+    def from_model(cls, user: "User") -> "UserDTO":
+        return cls(
+            id=user.id,
+            username=user.username,
+            email=user.email,
+            is_active=user.is_active
+        )
+
 async def init_db():
     await Tortoise.init(
         db_url="sqlite://db.sqlite3",
@@ -43,7 +60,8 @@ async def create_and_query_users():
     # Query all users
     users = await User.all()
     for u in users:
-        print("User in DB:", u)
+        dto = UserDTO.from_model(u)
+        print("User DTO:", dto)
 
 async def main():
     await init_db()
@@ -57,7 +75,8 @@ asyncio.run(main())
 
 async def async_user_list():
     users = await User.all()
-    return ", ".join([u.username for u in users])
+    dtos = [UserDTO.from_model(u) for u in users]
+    return ", ".join([dto.username for dto in dtos])
 
 print("\n--- Async ORM integration complete! ---")
 
