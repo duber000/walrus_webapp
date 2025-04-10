@@ -111,3 +111,47 @@ print(res2)
 
 # Exercise 3:
 # Add a `User` class with login/logout methods.
+
+# --- Python 3.13+: TypeVar defaults for generics (PEP 696) ---
+
+from typing import TypeVar, Generic
+
+T = TypeVar("T", default=int)
+U = TypeVar("U", default=str)
+
+class Pair(Generic[T, U]):
+    def __init__(self, first: T, second: U):
+        self.first = first
+        self.second = second
+
+    def __repr__(self):
+        return f"Pair({self.first!r}, {self.second!r})"
+
+p_default = Pair(1, "hello")  # uses defaults int, str
+print("Default Pair:", p_default)
+
+p_partial = Pair[float](3.14, "pi")  # overrides T, keeps U default
+print("Partial override Pair:", p_partial)
+
+p_full = Pair[float, bytes](2.71, b"e")  # overrides both
+print("Full override Pair:", p_full)
+
+# --- Python 3.13+: TypeIs for type narrowing (PEP 742) ---
+
+from typing import TypeIs
+
+def is_positive_int(x: int | float) -> TypeIs[int]:
+    """Return True if x is a positive int (not float)."""
+    return isinstance(x, int) and x > 0
+
+def process_number(x: int | float):
+    if is_positive_int(x):
+        # Type checker now knows x is int here
+        print(f"Positive integer: {x} (squared: {x * x})")
+    else:
+        # x is still int | float here
+        print(f"Not a positive integer: {x}")
+
+process_number(5)
+process_number(-3)
+process_number(3.14)
