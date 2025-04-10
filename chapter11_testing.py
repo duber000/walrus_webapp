@@ -4,6 +4,8 @@
 
 from dataclasses import dataclass
 
+# We'll use a dataclass as a simple Data Transfer Object (DTO) to hold test results.
+# DTOs are plain data containers that make it easy to pass structured data around.
 @dataclass
 class TestResult:
     name: str

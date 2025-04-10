@@ -26,6 +26,8 @@ class User(models.Model):
     def __str__(self):
         return self.username
 
+# We'll use a dataclass as a Data Transfer Object (DTO) to convert ORM model instances
+# into plain data containers, which are easier to serialize or pass to other parts of the app.
 @dataclass
 class UserDTO:
     id: int
