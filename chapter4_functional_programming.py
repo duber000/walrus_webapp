@@ -47,10 +47,33 @@ if (n := len(numbers)) > 3:
 
 # --- Mini Web Framework: Functional Routing ---
 
+# Sample user data to demonstrate map, filter, reduce in a realistic web context
+users = [
+    {"username": "alice", "age": 30, "active": True},
+    {"username": "bob", "age": 25, "active": False},
+    {"username": "carol", "age": 27, "active": True},
+    {"username": "dave", "age": 22, "active": True},
+]
+
 routes = {
     "/": lambda: "home page",
     "/about": lambda: "about page",
-    "/contact": lambda: "contact page"
+    "/contact": lambda: "contact page",
+
+    # Map: list all usernames
+    "/usernames": lambda: f"Usernames: {list(map(lambda u: u['username'], users))}",
+
+    # Filter: show only active users
+    "/active-users": lambda: f"Active users: {list(filter(lambda u: u['active'], users))}",
+
+    # Map + filter: usernames of active users
+    "/active-usernames": lambda: f"Active usernames: {list(map(lambda u: u['username'], filter(lambda u: u['active'], users)))}",
+
+    # Reduce: total age of all users
+    "/total-age": lambda: f"Total age: {reduce(lambda acc, u: acc + u['age'], users, 0)}",
+
+    # Reduce: count active users
+    "/count-active": lambda: f"Active user count: {reduce(lambda acc, u: acc + (1 if u['active'] else 0), users, 0)}",
 }
 
 def handle_request(url):
@@ -63,6 +86,11 @@ def handle_request(url):
 print(handle_request("/"))
 print(handle_request("/about"))
 print(handle_request("/missing"))
+print(handle_request("/usernames"))
+print(handle_request("/active-users"))
+print(handle_request("/active-usernames"))
+print(handle_request("/total-age"))
+print(handle_request("/count-active"))
 
 # --- Exercises ---
 
