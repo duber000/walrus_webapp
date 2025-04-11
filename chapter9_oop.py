@@ -1,8 +1,14 @@
 # Chapter 9: Object-Oriented Programming
 
-# This chapter introduces classes, objects, methods, and inheritance.
+# This chapter introduces classes, objects, methods, inheritance,
+# and some modern Python features like dataclasses and immutability.
 
 # --- Data Classes (Python 3.7+) ---
+
+# A dataclass is a Python class designed mainly to store data.
+# It automatically generates __init__, __repr__, __eq__, and other methods,
+# so you don't have to write boilerplate code.
+# You just declare the fields, and Python handles the rest.
 
 from dataclasses import dataclass, replace as dc_replace
 import copy
@@ -16,7 +22,12 @@ class User:
 u = User("alice", "alice@example.com")
 print(u)
 
-# --- Python 3.13+: copy.replace() for immutable objects ---
+# --- Immutable Data Classes (frozen=True) ---
+
+# By default, dataclass instances are mutable: you can change their fields.
+# If you want to make them immutable (read-only), set frozen=True.
+# This is useful for data you don't want to accidentally modify,
+# similar to tuples or namedtuples.
 
 @dataclass(frozen=True)
 class UserProfile:
@@ -26,6 +37,12 @@ class UserProfile:
 
 profile = UserProfile("alice", "alice@example.com", "3.12")
 print("Original profile:", profile)
+
+# Since frozen dataclasses are immutable, you can't do:
+# profile.python_version = "3.13"  # This would raise FrozenInstanceError
+
+# Instead, to "modify" an immutable dataclass, you create a *new* instance
+# with the updated values. The dataclasses.replace() function helps with this.
 
 # Before Python 3.13, use dataclasses.replace()
 updated_profile = dc_replace(profile, python_version="3.13")
