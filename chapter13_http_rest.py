@@ -28,6 +28,12 @@ import json
 
 # --- JSON Serialization ---
 
+# JSON serialization is the process of converting Python objects (like dicts, lists)
+# into a JSON-formatted string, which can be sent over the network or saved to a file.
+# JSON (JavaScript Object Notation) is a lightweight, text-based data format widely used
+# for data exchange between clients and servers.
+# The reverse process, turning a JSON string back into Python objects, is called deserialization.
+
 user = {
     "id": 1,
     "username": "alice",
