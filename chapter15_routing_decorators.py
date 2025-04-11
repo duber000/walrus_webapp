@@ -2,6 +2,29 @@
 
 # This chapter covers dynamic routing, path parameters, and route decorators.
 
+# --- What is a decorator? ---
+#
+# A decorator is a function that takes another function and returns a new function,
+# usually adding some extra behavior. Decorators are a way to "wrap" functions
+# to modify or enhance them without changing their code.
+#
+# In web frameworks, decorators are often used to register route handler functions,
+# add authentication, logging, caching, or other cross-cutting concerns.
+#
+# The @decorator syntax is just a shortcut for:
+#
+# @my_decorator
+# def my_func():
+#     pass
+#
+# which is equivalent to:
+#
+# def my_func():
+#     pass
+# my_func = my_decorator(my_func)
+#
+# In this chapter, we use decorators to register URL patterns with handler functions.
+
 import re
 
 routes = {}
