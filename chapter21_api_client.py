@@ -118,3 +118,115 @@ if __name__ == "__main__":
 
 # Exercise 6:
 # Create an async function that posts multiple new posts concurrently and collects their responses.
+
+# --- Save user exercises to webapp/routes.py ---
+
+def save_exercises_to_webapp():
+    exercises_code = "\n# --- Chapter 21 User Exercises ---\n"
+
+    # Exercise 1: async error handling
+    exercises_code += (
+        "import httpx\n"
+        "async def fetch_users_async_safe():\n"
+        "    url = 'https://jsonplaceholder.typicode.com/users'\n"
+        "    try:\n"
+        "        async with httpx.AsyncClient() as client:\n"
+        "            resp = await client.get(url)\n"
+        "            resp.raise_for_status()\n"
+        "            return resp.json()\n"
+        "    except Exception:\n"
+        "        return None\n\n"
+    )
+
+    # Exercise 2: query params for API
+    exercises_code += (
+        "async def fetch_posts_by_user(user_id):\n"
+        "    url = 'https://jsonplaceholder.typicode.com/posts'\n"
+        "    params = {'userId': user_id}\n"
+        "    async with httpx.AsyncClient() as client:\n"
+        "        resp = await client.get(url, params=params)\n"
+        "        resp.raise_for_status()\n"
+        "        return resp.json()\n\n"
+    )
+
+    # Exercise 3: integrate into webapp route
+    exercises_code += (
+        "async def posts_by_user_route(scope, receive, send):\n"
+        "    from urllib.parse import parse_qs\n"
+        "    query_string = scope.get('query_string', b'').decode()\n"
+        "    params = parse_qs(query_string)\n"
+        "    user_id = params.get('userId', ['1'])[0]\n"
+        "    posts = await fetch_posts_by_user(user_id)\n"
+        "    import json\n"
+        "    body = json.dumps(posts).encode()\n"
+        "    headers = [(b'content-type', b'application/json')]\n"
+        "    await send({'type': 'http.response.start', 'status': 200, 'headers': headers})\n"
+        "    await send({'type': 'http.response.body', 'body': body})\n"
+        "routes['/posts-by-user'] = posts_by_user_route\n\n"
+    )
+
+    # Exercise 4: fetch multiple user lists concurrently
+    exercises_code += (
+        "import asyncio\n"
+        "async def fetch_multiple_users():\n"
+        "    urls = [\n"
+        "        'https://jsonplaceholder.typicode.com/users',\n"
+        "        'https://jsonplaceholder.typicode.com/users?userId=2'\n"
+        "    ]\n"
+        "    async with httpx.AsyncClient() as client:\n"
+        "        results = await asyncio.gather(*(client.get(url) for url in urls))\n"
+        "        return [resp.json() for resp in results]\n\n"
+    )
+
+    # Exercise 5: timeout handling
+    exercises_code += (
+        "async def fetch_with_timeout(url, timeout=2.0):\n"
+        "    try:\n"
+        "        async with httpx.AsyncClient(timeout=timeout) as client:\n"
+        "            resp = await client.get(url)\n"
+        "            resp.raise_for_status()\n"
+        "            return resp.json()\n"
+        "    except httpx.TimeoutException:\n"
+        "        return {'error': 'Request timed out'}\n"
+        "    except Exception as e:\n"
+        "        return {'error': str(e)}\n\n"
+    )
+
+    # Exercise 6: post multiple new posts concurrently
+    exercises_code += (
+        "async def post_multiple_posts(posts):\n"
+        "    url = 'https://jsonplaceholder.typicode.com/posts'\n"
+        "    async with httpx.AsyncClient() as client:\n"
+        "        tasks = [client.post(url, json=post) for post in posts]\n"
+        "        results = await asyncio.gather(*tasks)\n"
+        "        return [resp.json() for resp in results]\n\n"
+    )
+
+    # Append or update the exercises in webapp/routes.py
+    with open('webapp/routes.py', 'r') as f:
+        content = f.read()
+
+    marker = '# --- Chapter 21 User Exercises ---'
+    if marker in content:
+        pre = content.split(marker)[0]
+        post = content.split(marker)[-1]
+        post_lines = post.splitlines()
+        idx = 0
+        for i, line in enumerate(post_lines):
+            if line.strip().startswith('# ---'):
+                idx = i
+                break
+        else:
+            idx = len(post_lines)
+        post = '\n'.join(post_lines[idx:])
+        new_content = pre + exercises_code + post
+    else:
+        new_content = content + '\n' + exercises_code
+
+    with open('webapp/routes.py', 'w') as f:
+        f.write(new_content)
+
+    print("Saved your Chapter 21 exercises to webapp/routes.py!")
+
+if __name__ == "__main__":
+    save_exercises_to_webapp()
