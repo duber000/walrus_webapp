@@ -90,6 +90,78 @@ for i in range(10):
 # Exercise 3:
 # Add a route /sum-until/<n> that returns the sum of all numbers from 1 up to n (inclusive).
 
+# --- Save user exercises to webapp/routes.py ---
+
+def save_exercises_to_webapp():
+    """
+    For each exercise, append a real route handler to webapp/routes.py.
+    """
+    exercises_code = "\n# --- Chapter 2 User Exercises ---\n"
+
+    # Exercise 1: /number-sign/<n>
+    exercises_code += (
+        "def number_sign_route(n):\n"
+        "    n = int(n)\n"
+        "    if n > 0:\n"
+        "        return 'Positive'\n"
+        "    elif n < 0:\n"
+        "        return 'Negative'\n"
+        "    else:\n"
+        "        return 'Zero'\n\n"
+        "routes['/number-sign/<n>'] = number_sign_route\n\n"
+    )
+
+    # Exercise 2: /even-numbers
+    exercises_code += (
+        "def even_numbers_route():\n"
+        "    evens = [str(i) for i in range(1, 21) if i % 2 == 0]\n"
+        "    return 'Even numbers: ' + ', '.join(evens)\n\n"
+        "routes['/even-numbers'] = even_numbers_route\n\n"
+    )
+
+    # Exercise 3: /sum-until/<n>
+    exercises_code += (
+        "def sum_until_route(n):\n"
+        "    n = int(n)\n"
+        "    total = 0\n"
+        "    for i in range(1, n+1):\n"
+        "        total += i\n"
+        "    return f'Sum: {total}'\n\n"
+        "routes['/sum-until/<n>'] = sum_until_route\n\n"
+    )
+
+    # Append or update the exercises in webapp/routes.py
+    with open("webapp/routes.py", "r") as f:
+        content = f.read()
+
+    marker = "# --- Chapter 2 User Exercises ---"
+    if marker in content:
+        # Replace existing block
+        pre = content.split(marker)[0]
+        post = content.split(marker)[-1]
+        # Remove everything after marker up to next comment or EOF
+        post_lines = post.splitlines()
+        idx = 0
+        for i, line in enumerate(post_lines):
+            if line.strip().startswith("# ---"):
+                idx = i
+                break
+        else:
+            idx = len(post_lines)
+        post = "\n".join(post_lines[idx:])
+        new_content = pre + exercises_code + post
+    else:
+        # Append at the end
+        new_content = content + "\n" + exercises_code
+
+    with open("webapp/routes.py", "w") as f:
+        f.write(new_content)
+
+    print("Saved your Chapter 2 exercises to webapp/routes.py!")
+
+if __name__ == "__main__":
+    save_exercises_to_webapp()
+
 # --- Mini Web Framework: Routing Logic ---
 
 # Let's simulate a simple request URL
