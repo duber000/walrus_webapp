@@ -63,40 +63,75 @@ for t in threads:
 
 print("All requests handled.")
 
-# --- Exercises ---
+# --- Exercises: Build the Webapp with Multithreading ---
 
 # Exercise 1:
-# Write a function that prints numbers 1-5 with a delay, and run it in a thread.
+# Add a route /thread-count that starts a thread to count from 1 to 5 and returns the result.
 
 # Exercise 2:
-# Create two threads that print different messages, and run them simultaneously.
+# Add a route /thread-messages that starts two threads, each printing a different message, and returns their output.
 
 # Exercise 3:
-# Modify the mini web framework to simulate handling 10 requests concurrently.
+# Add a route /concurrent-requests that simulates handling 10 requests concurrently and returns a summary.
 
 # Next chapter: GPU parallelism!
 
 # --- Save user exercises to webapp/routes.py ---
 
 def save_exercises_to_webapp():
+    import threading
+    import time
+
     exercises_code = "\n# --- Chapter 5 User Exercises ---\n"
 
-    # Exercise 1: print numbers 1-5 with delay (simulate output)
+    # Exercise 1: /thread-count
     exercises_code += (
-        "def exercise5_1():\n"
-        "    return 'Threaded count: 1 2 3 4 5'\n\n"
+        "def thread_count_route():\n"
+        "    result = []\n"
+        "    def count():\n"
+        "        for i in range(1, 6):\n"
+        "            result.append(str(i))\n"
+        "            time.sleep(0.05)\n"
+        "    t = threading.Thread(target=count)\n"
+        "    t.start()\n"
+        "    t.join()\n"
+        "    return 'Threaded count: ' + ' '.join(result)\n\n"
+        "routes['/thread-count'] = thread_count_route\n\n"
     )
 
-    # Exercise 2: two threads with different messages (simulate output)
+    # Exercise 2: /thread-messages
     exercises_code += (
-        "def exercise5_2():\n"
-        "    return 'Thread A: Hello | Thread B: World'\n\n"
+        "def thread_messages_route():\n"
+        "    output = []\n"
+        "    def a():\n"
+        "        output.append('Thread A: Hello')\n"
+        "    def b():\n"
+        "        output.append('Thread B: World')\n"
+        "    t1 = threading.Thread(target=a)\n"
+        "    t2 = threading.Thread(target=b)\n"
+        "    t1.start()\n"
+        "    t2.start()\n"
+        "    t1.join()\n"
+        "    t2.join()\n"
+        "    return ' | '.join(output)\n\n"
+        "routes['/thread-messages'] = thread_messages_route\n\n"
     )
 
-    # Exercise 3: simulate 10 concurrent requests
+    # Exercise 3: /concurrent-requests
     exercises_code += (
-        "def exercise5_3():\n"
-        "    return 'Handled 10 concurrent requests'\n\n"
+        "def concurrent_requests_route():\n"
+        "    results = []\n"
+        "    def handle(i):\n"
+        "        results.append(f'Request {i} handled')\n"
+        "    threads = []\n"
+        "    for i in range(10):\n"
+        "        t = threading.Thread(target=handle, args=(i+1,))\n"
+        "        t.start()\n"
+        "        threads.append(t)\n"
+        "    for t in threads:\n"
+        "        t.join()\n"
+        "    return ' | '.join(results)\n\n"
+        "routes['/concurrent-requests'] = concurrent_requests_route\n\n"
     )
 
     # Append or update the exercises in webapp/routes.py
