@@ -130,7 +130,7 @@ def save_exercises_to_webapp():
         "routes['/sum-until/<n>'] = sum_until_route\n\n"
     )
 
-    # Append or update the exercises in webapp/routes.py
+    # Actually add the routes to webapp/routes.py for the webapp to use
     with open("webapp/routes.py", "r") as f:
         content = f.read()
 
