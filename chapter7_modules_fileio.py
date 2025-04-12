@@ -50,62 +50,74 @@ print("Defined User model class (no database connection yet).")
 
 # We'll connect to the database and use async queries in a later chapter!
 
-# --- Exercises ---
+# --- Exercises: Build the Webapp with Modules and File I/O ---
 
 # Exercise 1:
-# Write a program that saves a list of your favorite movies to a file, one per line.
+# Add a route /favorite-movies that saves a list of favorite movies to a file and returns a confirmation.
 
 # Exercise 2:
-# Write a program that reads the movies file and prints each movie with a number.
+# Add a route /list-movies that reads the movies file and returns a numbered list.
 
 # Exercise 3:
-# Split your mini web framework into two files: one for routes, one for the server logic.
+# Add a route /framework-structure that returns a message about splitting the framework into modules.
 
 # --- Save user exercises to webapp/routes.py ---
 
 def save_exercises_to_webapp():
     exercises_code = "\n# --- Chapter 7 User Exercises ---\n"
 
-    # Exercise 1: save favorite movies (simulate output)
+    # Exercise 1: /favorite-movies
     exercises_code += (
-        "def exercise7_1():\n"
-        "    return 'Saved favorite movies to file.'\n\n"
+        "def favorite_movies_route():\n"
+        "    movies = ['The Matrix', 'Inception', 'Interstellar']\n"
+        "    with open('favorite_movies.txt', 'w') as f:\n"
+        "        for movie in movies:\n"
+        "            f.write(movie + '\\n')\n"
+        "    return 'Saved favorite movies to favorite_movies.txt.'\n\n"
+        "routes['/favorite-movies'] = favorite_movies_route\n\n"
     )
 
-    # Exercise 2: read movies and print numbered list (simulate output)
+    # Exercise 2: /list-movies
     exercises_code += (
-        "def exercise7_2():\n"
-        "    return '1. Movie A\\n2. Movie B\\n3. Movie C'\n\n"
+        "def list_movies_route():\n"
+        "    try:\n"
+        "        with open('favorite_movies.txt', 'r') as f:\n"
+        "            movies = [line.strip() for line in f if line.strip()]\n"
+        "        return '\\n'.join([f'{i+1}. {movie}' for i, movie in enumerate(movies)])\n"
+        "    except FileNotFoundError:\n"
+        "        return 'No favorite_movies.txt file found.'\n\n"
+        "routes['/list-movies'] = list_movies_route\n\n"
     )
 
-    # Exercise 3: split framework into modules (simulate output)
+    # Exercise 3: /framework-structure
     exercises_code += (
-        "def exercise7_3():\n"
-        "    return 'Split framework into routes and server modules.'\n\n"
+        "def framework_structure_route():\n"
+        "    return 'Framework split into routes and server modules.'\n\n"
+        "routes['/framework-structure'] = framework_structure_route\n\n"
     )
 
     # Append or update the exercises in webapp/routes.py
-    with open("webapp/routes.py", "r") as f:
+    with open('webapp/routes.py', 'r') as f:
         content = f.read()
 
-    marker = "# --- Chapter 7 User Exercises ---"
+    marker = '# --- Chapter 7 User Exercises ---'
     if marker in content:
         pre = content.split(marker)[0]
         post = content.split(marker)[-1]
         post_lines = post.splitlines()
         idx = 0
         for i, line in enumerate(post_lines):
-            if line.strip().startswith("# ---"):
+            if line.strip().startswith('# ---'):
                 idx = i
                 break
         else:
             idx = len(post_lines)
-        post = "\n".join(post_lines[idx:])
+        post = '\n'.join(post_lines[idx:])
         new_content = pre + exercises_code + post
     else:
-        new_content = content + "\n" + exercises_code
+        new_content = content + '\n' + exercises_code
 
-    with open("webapp/routes.py", "w") as f:
+    with open('webapp/routes.py', 'w') as f:
         f.write(new_content)
 
     print("Saved your Chapter 7 exercises to webapp/routes.py!")
