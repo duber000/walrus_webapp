@@ -63,3 +63,72 @@ print(handle_request("/unknown"))
 
 # Exercise 3:
 # Refactor the routing system to support query parameters.
+
+# --- Save user exercises to webapp/routes.py ---
+
+def save_exercises_to_webapp():
+    exercises_code = "\n# --- Chapter 15 User Exercises ---\n"
+
+    # Exercise 1: /users/<user_id>/posts/<post_id>
+    exercises_code += (
+        "import re\n"
+        "def user_post_detail(user_id, post_id):\n"
+        "    return f'User {user_id}, Post {post_id}'\n"
+        "routes[r'^/users/(?P<user_id>\\\\d+)/posts/(?P<post_id>\\\\d+)$'] = user_post_detail\n\n"
+    )
+
+    # Exercise 2: decorator with methods
+    exercises_code += (
+        "def route_with_methods(path_pattern, methods=['GET']):\n"
+        "    def decorator(func):\n"
+        "        if not hasattr(func, 'methods'):\n"
+        "            func.methods = set()\n"
+        "        func.methods.update(methods)\n"
+        "        routes[path_pattern] = func\n"
+        "        return func\n"
+        "    return decorator\n\n"
+        "@route_with_methods(r'^/ping$', methods=['GET', 'POST'])\n"
+        "def ping():\n"
+        "    return 'pong'\n\n"
+    )
+
+    # Exercise 3: query param support
+    exercises_code += (
+        "def handle_request_with_query(path, query=None):\n"
+        "    for pattern, handler in routes.items():\n"
+        "        if (match := re.match(pattern, path)):\n"
+        "            if query:\n"
+        "                return handler(**match.groupdict(), **query)\n"
+        "            else:\n"
+        "                return handler(**match.groupdict())\n"
+        "    return '404 Not Found'\n\n"
+    )
+
+    # Append or update the exercises in webapp/routes.py
+    with open('webapp/routes.py', 'r') as f:
+        content = f.read()
+
+    marker = '# --- Chapter 15 User Exercises ---'
+    if marker in content:
+        pre = content.split(marker)[0]
+        post = content.split(marker)[-1]
+        post_lines = post.splitlines()
+        idx = 0
+        for i, line in enumerate(post_lines):
+            if line.strip().startswith('# ---'):
+                idx = i
+                break
+        else:
+            idx = len(post_lines)
+        post = '\n'.join(post_lines[idx:])
+        new_content = pre + exercises_code + post
+    else:
+        new_content = content + '\n' + exercises_code
+
+    with open('webapp/routes.py', 'w') as f:
+        f.write(new_content)
+
+    print("Saved your Chapter 15 exercises to webapp/routes.py!")
+
+if __name__ == "__main__":
+    save_exercises_to_webapp()

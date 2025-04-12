@@ -130,3 +130,73 @@ print("Response headers with CORS:", headers)
 
 # Exercise 3:
 # Add CSRF protection to POST requests.
+
+# --- Save user exercises to webapp/routes.py ---
+
+def save_exercises_to_webapp():
+    exercises_code = "\n# --- Chapter 16 User Exercises ---\n"
+
+    # Exercise 1: improved password hashing
+    exercises_code += (
+        "import hashlib\n"
+        "def hash_password_pepper(password, salt='somesalt', pepper='superpepper'):\n"
+        "    return hashlib.sha256((salt + password + pepper).encode()).hexdigest()\n\n"
+    )
+
+    # Exercise 2: role-based access control
+    exercises_code += (
+        "def role_required(role):\n"
+        "    def decorator(func):\n"
+        "        def wrapper(*args, **kwargs):\n"
+        "            user_role = kwargs.get('user_role', 'user')\n"
+        "            if user_role == role:\n"
+        "                return func(*args, **kwargs)\n"
+        "            else:\n"
+        "                return '403 Forbidden: Insufficient role'\n"
+        "        return wrapper\n"
+        "    return decorator\n\n"
+        "@role_required('admin')\n"
+        "def admin_only_route(user_role='user'):\n"
+        "    return 'Welcome, admin!'\n"
+        "routes['/admin-only'] = admin_only_route\n\n"
+    )
+
+    # Exercise 3: CSRF protection
+    exercises_code += (
+        "def csrf_protect_route(request):\n"
+        "    token = request.headers.get('X-CSRF-Token')\n"
+        "    if token == 'known_token':\n"
+        "        return 'CSRF check passed.'\n"
+        "    else:\n"
+        "        return '403 Forbidden: CSRF token missing or invalid.'\n"
+        "routes['/csrf-protect'] = csrf_protect_route\n\n"
+    )
+
+    # Append or update the exercises in webapp/routes.py
+    with open('webapp/routes.py', 'r') as f:
+        content = f.read()
+
+    marker = '# --- Chapter 16 User Exercises ---'
+    if marker in content:
+        pre = content.split(marker)[0]
+        post = content.split(marker)[-1]
+        post_lines = post.splitlines()
+        idx = 0
+        for i, line in enumerate(post_lines):
+            if line.strip().startswith('# ---'):
+                idx = i
+                break
+        else:
+            idx = len(post_lines)
+        post = '\n'.join(post_lines[idx:])
+        new_content = pre + exercises_code + post
+    else:
+        new_content = content + '\n' + exercises_code
+
+    with open('webapp/routes.py', 'w') as f:
+        f.write(new_content)
+
+    print("Saved your Chapter 16 exercises to webapp/routes.py!")
+
+if __name__ == "__main__":
+    save_exercises_to_webapp()

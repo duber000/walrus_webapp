@@ -86,6 +86,69 @@ print("UserDTO as JSON:", user.json())
 # Exercise 3:
 # Parse a JSON string into your ProductDTO and handle validation errors.
 
+# --- Save user exercises to webapp/routes.py ---
+
+def save_exercises_to_webapp():
+    exercises_code = "\n# --- Chapter 19 User Exercises ---\n"
+
+    # Exercise 1: ProductDTO
+    exercises_code += (
+        "from pydantic import BaseModel\n"
+        "class ProductDTO(BaseModel):\n"
+        "    id: int\n"
+        "    name: str\n"
+        "    price: float\n"
+        "    in_stock: bool = True\n\n"
+    )
+
+    # Exercise 2: OrderDTO
+    exercises_code += (
+        "from typing import List\n"
+        "class OrderDTO(BaseModel):\n"
+        "    products: List[ProductDTO]\n"
+        "    total_price: float\n\n"
+    )
+
+    # Exercise 3: /parse-product
+    exercises_code += (
+        "def parse_product_route(json_str):\n"
+        "    try:\n"
+        "        product = ProductDTO.parse_raw(json_str)\n"
+        "        return f'Parsed: {product}'\n"
+        "    except Exception as e:\n"
+        "        return f'Validation error: {e}'\n"
+        "routes['/parse-product'] = parse_product_route\n\n"
+    )
+
+    # Append or update the exercises in webapp/routes.py
+    with open('webapp/routes.py', 'r') as f:
+        content = f.read()
+
+    marker = '# --- Chapter 19 User Exercises ---'
+    if marker in content:
+        pre = content.split(marker)[0]
+        post = content.split(marker)[-1]
+        post_lines = post.splitlines()
+        idx = 0
+        for i, line in enumerate(post_lines):
+            if line.strip().startswith('# ---'):
+                idx = i
+                break
+        else:
+            idx = len(post_lines)
+        post = '\n'.join(post_lines[idx:])
+        new_content = pre + exercises_code + post
+    else:
+        new_content = content + '\n' + exercises_code
+
+    with open('webapp/routes.py', 'w') as f:
+        f.write(new_content)
+
+    print("Saved your Chapter 19 exercises to webapp/routes.py!")
+
+if __name__ == "__main__":
+    save_exercises_to_webapp()
+
 # --- Summary ---
 
 # Pydantic helps you write safer, cleaner code by:

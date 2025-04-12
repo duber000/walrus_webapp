@@ -81,3 +81,77 @@ print(f"Status: {status}, Response: {response}")
 
 # Exercise 3:
 # Parse a JSON request body and extract fields.
+
+# --- Save user exercises to webapp/routes.py ---
+
+def save_exercises_to_webapp():
+    exercises_code = "\n# --- Chapter 13 User Exercises ---\n"
+
+    # Exercise 1: /products
+    exercises_code += (
+        "def products_route():\n"
+        "    products = [\n"
+        "        {'id': 1, 'name': 'Widget', 'price': 9.99},\n"
+        "        {'id': 2, 'name': 'Gadget', 'price': 14.99},\n"
+        "        {'id': 3, 'name': 'Thingamajig', 'price': 4.99},\n"
+        "    ]\n"
+        "    import json\n"
+        "    return json.dumps(products)\n\n"
+        "routes['/products'] = products_route\n\n"
+    )
+
+    # Exercise 2: /add-user (POST)
+    exercises_code += (
+        "def add_user_route(body=None):\n"
+        "    import json\n"
+        "    if body is None:\n"
+        "        return 'No data provided.'\n"
+        "    try:\n"
+        "        data = json.loads(body)\n"
+        "        username = data.get('username', 'unknown')\n"
+        "        return f'User {username} added!'\n"
+        "    except Exception:\n"
+        "        return 'Invalid JSON.'\n\n"
+        "routes['/add-user'] = add_user_route\n\n"
+    )
+
+    # Exercise 3: /parse-json
+    exercises_code += (
+        "def parse_json_route(body=None):\n"
+        "    import json\n"
+        "    try:\n"
+        "        data = json.loads(body)\n"
+        "        return f\"Parsed fields: {list(data.keys())}\"\n"
+        "    except Exception:\n"
+        "        return 'Invalid JSON.'\n\n"
+        "routes['/parse-json'] = parse_json_route\n\n"
+    )
+
+    # Append or update the exercises in webapp/routes.py
+    with open('webapp/routes.py', 'r') as f:
+        content = f.read()
+
+    marker = '# --- Chapter 13 User Exercises ---'
+    if marker in content:
+        pre = content.split(marker)[0]
+        post = content.split(marker)[-1]
+        post_lines = post.splitlines()
+        idx = 0
+        for i, line in enumerate(post_lines):
+            if line.strip().startswith('# ---'):
+                idx = i
+                break
+        else:
+            idx = len(post_lines)
+        post = '\n'.join(post_lines[idx:])
+        new_content = pre + exercises_code + post
+    else:
+        new_content = content + '\n' + exercises_code
+
+    with open('webapp/routes.py', 'w') as f:
+        f.write(new_content)
+
+    print("Saved your Chapter 13 exercises to webapp/routes.py!")
+
+if __name__ == "__main__":
+    save_exercises_to_webapp()
