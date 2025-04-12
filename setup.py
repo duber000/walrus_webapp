@@ -36,6 +36,18 @@ def create_webapp_structure():
                     f.write(
                         "# webapp/utils.py\n"
                         "# Utility functions\n"
+                        "def safe_json_loads(data, default=None):\n"
+                        "    import json\n"
+                        "    try:\n"
+                        "        return json.loads(data)\n"
+                        "    except Exception:\n"
+                        "        return default\n"
+                        "\n"
+                        "def safe_int(val, default=0):\n"
+                        "    try:\n"
+                        "        return int(val)\n"
+                        "    except Exception:\n"
+                        "        return default\n"
                     )
 
 create_webapp_structure()

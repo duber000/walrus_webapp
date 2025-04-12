@@ -14,16 +14,18 @@ def start_sync_server(host="0.0.0.0", port=8000):
     """
     class RequestHandler(BaseHTTPRequestHandler):
         def do_GET(self):
-            if (response := get_route(self.path)) is not None:
+            response = get_route(self.path)
+            if callable(response):
+                # If the route is an async ASGI handler, show a message
+                self.send_response(501)
+                self.send_header("Content-type", "text/plain")
+                self.end_headers()
+                self.wfile.write(b"This route requires async/ASGI support.")
+            else:
                 self.send_response(200 if response != '404 Not Found' else 404)
                 self.send_header("Content-type", "text/plain")
                 self.end_headers()
                 self.wfile.write(response.encode())
-            else:
-                self.send_response(404)
-                self.send_header("Content-type", "text/plain")
-                self.end_headers()
-                self.wfile.write(b"404 Not Found")
 
     server = HTTPServer((host, port), RequestHandler)
     print(f"Starting sync server on http://{host}:{port}")
@@ -56,23 +58,23 @@ async def app(scope, receive, send):
     assert scope["type"] == "http"
     path = scope["path"]
 
-    if (response_text := get_route(path)) is not None:
-        status_code = 200 if response_text != '404 Not Found' else 404
+    handler = get_route(path)
+    if callable(handler):
+        # If the handler is an async ASGI app, call it
+        await handler(scope, receive, send)
     else:
-        response_text = '404 Not Found'
-        status_code = 404
-
-    headers = [(b"content-type", b"text/plain")]
-
-    await send({
-        "type": "http.response.start",
-        "status": status_code,
-        "headers": headers
-    })
-    await send({
-        "type": "http.response.body",
-        "body": response_text.encode()
-    })
+        response_text = handler
+        status_code = 200 if response_text != '404 Not Found' else 404
+        headers = [(b"content-type", b"text/plain")]
+        await send({
+            "type": "http.response.start",
+            "status": status_code,
+            "headers": headers
+        })
+        await send({
+            "type": "http.response.body",
+            "body": response_text.encode()
+        })
 
 if __name__ == "__main__":
     walrus_art = r"""

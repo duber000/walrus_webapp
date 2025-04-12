@@ -1,5 +1,7 @@
 # webapp/routes.py
 
+import json
+
 # Base routes from Chapter 1
 routes = {
     '/': 'home page',
@@ -46,10 +48,8 @@ routes['/gpu-demo'] = gpu_demo
 def file_content():
     try:
         with open("output.txt", "r") as f:
-            if (content := f.read()) != "":
-                return content
-            else:
-                return "File is empty"
+            content = f.read()
+            return content if content else "File is empty"
     except FileNotFoundError:
         return "File not found."
 
@@ -80,15 +80,13 @@ routes['/user'] = user_info
 
 # Chapter 10: Web Server - no new route, but this file is used by the server
 
-# Placeholder for future async routes (Chapter 12)
+# --- Chapter 12: Async ORM Example (placeholder for future async routes) ---
 # Example:
 # async def async_users_route():
 #     users = await User.all()
 #     return ", ".join([u.username for u in users])
 
 # --- Chapter 18: PyTorch Integration ---
-
-import json
 from webapp.torch_model import predict_async
 
 async def predict_route_async(scope, receive, send):
@@ -103,9 +101,11 @@ async def predict_route_async(scope, receive, send):
 
     # Wait for request body
     body = b""
-    while (message := await receive()).get("more_body", False):
+    while True:
+        message = await receive()
         body += message.get("body", b"")
-    body += message.get("body", b"")
+        if not message.get("more_body", False):
+            break
 
     try:
         data = json.loads(body.decode())
@@ -133,7 +133,6 @@ async def predict_route_async(scope, receive, send):
         "body": response_body
     })
 
-# Register the async route under a special key
 routes['/predict'] = predict_route_async
 
 def get_route(url):
@@ -146,7 +145,6 @@ def get_route(url):
     handler = routes.get(url)
     return handler if handler is not None else '404 Not Found'
 
-
 # --- Chapter 2 User Exercises ---
 def exercise2_1():
     return 'Positive'
@@ -157,16 +155,12 @@ def exercise2_2():
 def exercise2_3():
     return 'Sum: 0'
 
-
+# --- Chapter 20: External API Integration ---
 from chapter20_external_api import external_users_route_async
-
 routes['/external-users'] = external_users_route_async
 
-
 # --- Chapter 21: API Client Integration ---
-
 import json as _json
-import asyncio as _asyncio
 
 from chapter21_api_client import fetch_users_sync, create_post_sync, fetch_users_async, create_post_async
 
@@ -208,9 +202,11 @@ async def create_post_async_route(scope, receive, send):
 
     # Read request body
     body_bytes = b""
-    while (message := await receive()).get("more_body", False):
+    while True:
+        message = await receive()
         body_bytes += message.get("body", b"")
-    body_bytes += message.get("body", b"")
+        if not message.get("more_body", False):
+            break
 
     try:
         data = _json.loads(body_bytes.decode())
