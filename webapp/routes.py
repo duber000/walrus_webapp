@@ -3,10 +3,8 @@
 import json
 
 # Base routes from Chapter 1
-routes = {
-    '/': 'home page',
-    '/about': 'about page'
-}
+routes = {"/": "home page", "/about": "about page"}
+
 
 # Chapter 2: Control Flow - add a /age route
 def age_category(age):
@@ -17,32 +15,42 @@ def age_category(age):
     else:
         return "You are an adult."
 
-routes['/age'] = lambda: age_category(20)
+
+routes["/age"] = lambda: age_category(20)
+
 
 # Chapter 3: Functions - add a /greet route
 def greet(name="Alice"):
     return f"Hello, {name}!"
 
-routes['/greet'] = lambda: greet()
+
+routes["/greet"] = lambda: greet()
+
 
 # Chapter 4: Functional Programming - add a /squares route
 def squares():
     nums = [1, 2, 3, 4, 5]
     return f"Squares: {[x * x for x in nums]}"
 
-routes['/squares'] = squares
+
+routes["/squares"] = squares
+
 
 # Chapter 5: Multithreading - simulate with a /thread-demo route
 def thread_demo():
     return "Threading demo placeholder"
 
-routes['/thread-demo'] = thread_demo
+
+routes["/thread-demo"] = thread_demo
+
 
 # Chapter 6: GPU Parallelism - simulate with a /gpu-demo route
 def gpu_demo():
     return "GPU demo placeholder"
 
-routes['/gpu-demo'] = gpu_demo
+
+routes["/gpu-demo"] = gpu_demo
+
 
 # Chapter 7: Modules and File I/O - add a /file-content route
 def file_content():
@@ -53,7 +61,9 @@ def file_content():
     except FileNotFoundError:
         return "File not found."
 
-routes['/file-content'] = file_content
+
+routes["/file-content"] = file_content
+
 
 # Chapter 8: Error Handling - add a /error-test route
 def error_test():
@@ -62,21 +72,25 @@ def error_test():
     except ZeroDivisionError:
         return "Cannot divide by zero!"
 
-routes['/error-test'] = error_test
+
+routes["/error-test"] = error_test
 
 # Chapter 9: OOP - add a /user route
 from dataclasses import dataclass
+
 
 @dataclass
 class User:
     username: str
     email: str
 
+
 def user_info():
     user = User("alice", "alice@example.com")
     return f"User: {user.username}, Email: {user.email}"
 
-routes['/user'] = user_info
+
+routes["/user"] = user_info
 
 # Chapter 10: Web Server - no new route, but this file is used by the server
 
@@ -88,6 +102,7 @@ routes['/user'] = user_info
 
 # --- Chapter 18: PyTorch Integration ---
 from webapp.torch_model import predict_async
+
 
 async def predict_route_async(scope, receive, send):
     """
@@ -115,25 +130,17 @@ async def predict_route_async(scope, receive, send):
 
     y_value = await predict_async(x_value)
 
-    response_data = {
-        "input": x_value,
-        "output": y_value
-    }
+    response_data = {"input": x_value, "output": y_value}
     response_body = json.dumps(response_data).encode()
 
     headers = [(b"content-type", b"application/json")]
 
-    await send({
-        "type": "http.response.start",
-        "status": 200,
-        "headers": headers
-    })
-    await send({
-        "type": "http.response.body",
-        "body": response_body
-    })
+    await send({"type": "http.response.start", "status": 200, "headers": headers})
+    await send({"type": "http.response.body", "body": response_body})
 
-routes['/predict'] = predict_route_async
+
+routes["/predict"] = predict_route_async
+
 
 def get_route(url):
     """
@@ -143,26 +150,37 @@ def get_route(url):
         str or callable: response string or async ASGI app.
     """
     handler = routes.get(url)
-    return handler if handler is not None else '404 Not Found'
+    return handler if handler is not None else "404 Not Found"
+
 
 # --- Chapter 2 User Exercises ---
 def exercise2_1():
-    return 'Positive'
+    return "Positive"
+
 
 def exercise2_2():
-    return 'Even numbers: 2, 4, 6, 8, 10, 12, 14, 16, 18, 20'
+    return "Even numbers: 2, 4, 6, 8, 10, 12, 14, 16, 18, 20"
+
 
 def exercise2_3():
-    return 'Sum: 0'
+    return "Sum: 0"
+
 
 # --- Chapter 20: External API Integration ---
 from chapter20_external_api import external_users_route_async
-routes['/external-users'] = external_users_route_async
+
+routes["/external-users"] = external_users_route_async
 
 # --- Chapter 21: API Client Integration ---
 import json as _json
 
-from chapter21_api_client import fetch_users_sync, create_post_sync, fetch_users_async, create_post_async
+from chapter21_api_client import (
+    fetch_users_sync,
+    create_post_sync,
+    fetch_users_async,
+    create_post_async,
+)
+
 
 def external_users_sync():
     """
@@ -171,7 +189,9 @@ def external_users_sync():
     users = fetch_users_sync()
     return _json.dumps(users)
 
-routes['/external-users-sync'] = external_users_sync
+
+routes["/external-users-sync"] = external_users_sync
+
 
 async def external_users_async_route(scope, receive, send):
     """
@@ -182,17 +202,12 @@ async def external_users_async_route(scope, receive, send):
 
     headers = [(b"content-type", b"application/json")]
 
-    await send({
-        "type": "http.response.start",
-        "status": 200,
-        "headers": headers
-    })
-    await send({
-        "type": "http.response.body",
-        "body": body
-    })
+    await send({"type": "http.response.start", "status": 200, "headers": headers})
+    await send({"type": "http.response.body", "body": body})
 
-routes['/external-users-async'] = external_users_async_route
+
+routes["/external-users-async"] = external_users_async_route
+
 
 async def create_post_async_route(scope, receive, send):
     """
@@ -223,15 +238,8 @@ async def create_post_async_route(scope, receive, send):
 
     headers = [(b"content-type", b"application/json")]
 
-    await send({
-        "type": "http.response.start",
-        "status": 201,
-        "headers": headers
-    })
-    await send({
-        "type": "http.response.body",
-        "body": response_body
-    })
+    await send({"type": "http.response.start", "status": 201, "headers": headers})
+    await send({"type": "http.response.body", "body": response_body})
 
-routes['/create-post-async'] = create_post_async_route
 
+routes["/create-post-async"] = create_post_async_route
