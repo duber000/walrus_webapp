@@ -74,22 +74,42 @@ breakpoint()
 def save_exercises_to_webapp():
     exercises_code = "\n# --- Chapter 11 User Exercises ---\n"
 
-    # Exercise 1: tests for request handler (simulate output)
+    # Exercise 1: /test-request-handler
     exercises_code += (
-        "def exercise11_1():\n"
-        "    return 'Wrote tests for request handler.'\n\n"
+        "def test_request_handler_route():\n"
+        "    # Simulate a test for the request handler\n"
+        "    routes = {'/': lambda: 'home'}\n"
+        "    def handle_request(url):\n"
+        "        if (handler := routes.get(url)) is not None:\n"
+        "            return handler()\n"
+        "        else:\n"
+        "            return '404 Not Found'\n"
+        "    result = handle_request('/')\n"
+        "    return f'Test result: {result == \"home\"}'\n"
+        "routes['/test-request-handler'] = test_request_handler_route\n\n"
     )
 
-    # Exercise 2: debugged a bug (simulate output)
+    # Exercise 2: /debug-bug
     exercises_code += (
-        "def exercise11_2():\n"
-        "    return 'Debugged a bug using print and breakpoint.'\n\n"
+        "def debug_bug_route():\n"
+        "    # Simulate debugging a bug\n"
+        "    try:\n"
+        "        x = 1 / 0\n"
+        "    except ZeroDivisionError:\n"
+        "        return 'Debugged ZeroDivisionError!'\n"
+        "    return 'No error.'\n"
+        "routes['/debug-bug'] = debug_bug_route\n\n"
     )
 
-    # Exercise 3: explored pytest (simulate output)
+    # Exercise 3: /pytest-demo
     exercises_code += (
-        "def exercise11_3():\n"
-        "    return 'Explored pytest and wrote some tests.'\n\n"
+        "def pytest_demo_route():\n"
+        "    # Simulate a pytest test\n"
+        "    def add(a, b):\n"
+        "        return a + b\n"
+        "    assert add(2, 2) == 4\n"
+        "    return 'Pytest-style test passed.'\n"
+        "routes['/pytest-demo'] = pytest_demo_route\n\n"
     )
 
     # Append or update the exercises in webapp/routes.py

@@ -54,22 +54,26 @@ if __name__ == "__main__":
 def save_exercises_to_webapp():
     exercises_code = "\n# --- Chapter 10 User Exercises ---\n"
 
-    # Exercise 1: add more routes (simulate output)
+    # Exercise 1: /more-routes
     exercises_code += (
-        "def exercise10_1():\n"
-        "    return 'Added more routes to the server.'\n\n"
+        "def more_routes_route():\n"
+        "    return 'Added more routes: /foo, /bar, /baz.'\n"
+        "routes['/more-routes'] = more_routes_route\n\n"
     )
 
-    # Exercise 2: return HTML content (simulate output)
+    # Exercise 2: /html-content
     exercises_code += (
-        "def exercise10_2():\n"
-        "    return 'Server returns HTML content.'\n\n"
+        "def html_content_route():\n"
+        "    return '<html><body><h1>Hello, HTML!</h1></body></html>'\n"
+        "routes['/html-content'] = html_content_route\n\n"
     )
 
-    # Exercise 3: add logging (simulate output)
+    # Exercise 3: /log-request
     exercises_code += (
-        "def exercise10_3():\n"
-        "    return 'Server logs incoming requests.'\n\n"
+        "def log_request_route():\n"
+        "    print('Request received for /log-request')\n"
+        "    return 'Logged the request.'\n"
+        "routes['/log-request'] = log_request_route\n\n"
     )
 
     # Append or update the exercises in webapp/routes.py

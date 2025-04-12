@@ -126,3 +126,76 @@ print("\n--- Async ORM integration complete! ---")
 
 # Exercise 3:
 # Write an async function that fetches data from two APIs concurrently using asyncio.gather().
+
+# --- Save user exercises to webapp/routes.py ---
+
+def save_exercises_to_webapp():
+    exercises_code = "\n# --- Chapter 12 User Exercises ---\n"
+
+    # Exercise 1: /async-wait
+    exercises_code += (
+        "import asyncio\n"
+        "async def async_wait_route():\n"
+        "    await asyncio.sleep(2)\n"
+        "    return 'Done waiting'\n"
+        "routes['/async-wait'] = async_wait_route\n\n"
+    )
+
+    # Exercise 2: /create-multi-users
+    exercises_code += (
+        "async def create_multi_users_route():\n"
+        "    from tortoise import Tortoise, fields, models\n"
+        "    class User(models.Model):\n"
+        "        id = fields.IntField(pk=True)\n"
+        "        username = fields.CharField(max_length=50, unique=True)\n"
+        "        email = fields.CharField(max_length=100, unique=True)\n"
+        "        is_active = fields.BooleanField(default=True)\n"
+        "    await Tortoise.init(db_url='sqlite://db.sqlite3', modules={'models': ['webapp.models']})\n"
+        "    await Tortoise.generate_schemas()\n"
+        "    for i in range(3):\n"
+        "        await User.get_or_create(username=f'user{i}', defaults={'email': f'user{i}@example.com', 'is_active': True})\n"
+        "    users = await User.all()\n"
+        "    return ', '.join([u.username for u in users])\n"
+        "routes['/create-multi-users'] = create_multi_users_route\n\n"
+    )
+
+    # Exercise 3: /gather-apis
+    exercises_code += (
+        "import asyncio\n"
+        "async def gather_apis_route():\n"
+        "    async def fake_api(name):\n"
+        "        await asyncio.sleep(0.5)\n"
+        "        return f'{name} result'\n"
+        "    results = await asyncio.gather(fake_api('api1'), fake_api('api2'))\n"
+        "    return ', '.join(results)\n"
+        "routes['/gather-apis'] = gather_apis_route\n\n"
+    )
+
+    # Append or update the exercises in webapp/routes.py
+    with open('webapp/routes.py', 'r') as f:
+        content = f.read()
+
+    marker = '# --- Chapter 12 User Exercises ---'
+    if marker in content:
+        pre = content.split(marker)[0]
+        post = content.split(marker)[-1]
+        post_lines = post.splitlines()
+        idx = 0
+        for i, line in enumerate(post_lines):
+            if line.strip().startswith('# ---'):
+                idx = i
+                break
+        else:
+            idx = len(post_lines)
+        post = '\n'.join(post_lines[idx:])
+        new_content = pre + exercises_code + post
+    else:
+        new_content = content + '\n' + exercises_code
+
+    with open('webapp/routes.py', 'w') as f:
+        f.write(new_content)
+
+    print("Saved your Chapter 12 exercises to webapp/routes.py!")
+
+if __name__ == "__main__":
+    save_exercises_to_webapp()

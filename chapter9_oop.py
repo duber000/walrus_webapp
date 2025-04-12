@@ -177,22 +177,62 @@ process_number(3.14)
 def save_exercises_to_webapp():
     exercises_code = "\n# --- Chapter 9 User Exercises ---\n"
 
-    # Exercise 1: Car class (simulate output)
+    # Exercise 1: /car-info
     exercises_code += (
-        "def exercise9_1():\n"
-        "    return 'Created Car class with display method.'\n\n"
+        "class Car:\n"
+        "    def __init__(self, make, model, year):\n"
+        "        self.make = make\n"
+        "        self.model = model\n"
+        "        self.year = year\n"
+        "    def display_info(self):\n"
+        "        return f'{self.year} {self.make} {self.model}'\n"
+        "def car_info_route():\n"
+        "    car = Car('Toyota', 'Corolla', 2020)\n"
+        "    return car.display_info()\n"
+        "routes['/car-info'] = car_info_route\n\n"
     )
 
-    # Exercise 2: Router class with dynamic routes (simulate output)
+    # Exercise 2: /dynamic-route/<name>
     exercises_code += (
-        "def exercise9_2():\n"
-        "    return 'Extended framework with Router class supporting dynamic routes.'\n\n"
+        "class Router:\n"
+        "    def __init__(self):\n"
+        "        self.routes = {}\n"
+        "    def add_route(self, pattern, handler):\n"
+        "        self.routes[pattern] = handler\n"
+        "    def handle(self, path):\n"
+        "        import re\n"
+        "        for pattern, handler in self.routes.items():\n"
+        "            match = re.match(pattern, path)\n"
+        "            if match:\n"
+        "                return handler(**match.groupdict())\n"
+        "        return '404 Not Found'\n"
+        "router = Router()\n"
+        "def dynamic_route(name):\n"
+        "    return f'Hello, {name}!'\n"
+        "router.add_route(r'^/dynamic-route/(?P<name>\\w+)$', dynamic_route)\n"
+        "def dynamic_route_route(name):\n"
+        "    return router.handle(f'/dynamic-route/{name}')\n"
+        "routes['/dynamic-route/<name>'] = dynamic_route_route\n\n"
     )
 
-    # Exercise 3: User class with login/logout (simulate output)
+    # Exercise 3: /user-login
     exercises_code += (
-        "def exercise9_3():\n"
-        "    return 'Added User class with login/logout methods.'\n\n"
+        "class User:\n"
+        "    def __init__(self, username):\n"
+        "        self.username = username\n"
+        "        self.logged_in = False\n"
+        "    def login(self):\n"
+        "        self.logged_in = True\n"
+        "        return f'{self.username} logged in.'\n"
+        "    def logout(self):\n"
+        "        self.logged_in = False\n"
+        "        return f'{self.username} logged out.'\n"
+        "def user_login_route():\n"
+        "    user = User('alice')\n"
+        "    login_msg = user.login()\n"
+        "    logout_msg = user.logout()\n"
+        "    return login_msg + ' ' + logout_msg\n"
+        "routes['/user-login'] = user_login_route\n\n"
     )
 
     # Append or update the exercises in webapp/routes.py
