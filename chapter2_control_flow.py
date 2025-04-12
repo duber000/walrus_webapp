@@ -79,16 +79,16 @@ for i in range(10):
         break     # stop loop at 7
     print("i =", i)
 
-# --- Exercises ---
+# --- Exercises: Build the Webapp with Control Flow ---
 
 # Exercise 1:
-# Write a program that asks the user for a number and prints whether it is positive, negative, or zero.
+# Add a route /number-sign/<n> that returns "Positive", "Negative", or "Zero" based on n.
 
 # Exercise 2:
-# Write a program that prints all even numbers from 1 to 20 using a for loop.
+# Add a route /even-numbers that returns all even numbers from 1 to 20 as a comma-separated string.
 
 # Exercise 3:
-# Write a program that asks the user to enter numbers repeatedly until they enter 0, then prints the sum of all entered numbers.
+# Add a route /sum-until/<n> that returns the sum of all numbers from 1 up to n (inclusive).
 
 # --- Mini Web Framework: Routing Logic ---
 
@@ -111,30 +111,42 @@ else:
 # --- Save user exercises to webapp/routes.py ---
 
 def save_exercises_to_webapp():
+    """
+    For each exercise, append a real route handler to webapp/routes.py.
+    """
     exercises_code = "\n# --- Chapter 2 User Exercises ---\n"
 
-    # Exercise 1: positive, negative, or zero
-    num = int(input("Exercise 1 - Enter a number: "))
-    if num > 0:
-        result1 = "Positive"
-    elif num < 0:
-        result1 = "Negative"
-    else:
-        result1 = "Zero"
-    exercises_code += f"def exercise2_1():\n    return '{result1}'\n\n"
+    # Exercise 1: /number-sign/<n>
+    exercises_code += (
+        "def number_sign_route(n):\n"
+        "    n = int(n)\n"
+        "    if n > 0:\n"
+        "        return 'Positive'\n"
+        "    elif n < 0:\n"
+        "        return 'Negative'\n"
+        "    else:\n"
+        "        return 'Zero'\n\n"
+        "routes['/number-sign/<n>'] = number_sign_route\n\n"
+    )
 
-    # Exercise 2: even numbers from 1 to 20
-    evens = [str(i) for i in range(1, 21) if i % 2 == 0]
-    exercises_code += f"def exercise2_2():\n    return 'Even numbers: {', '.join(evens)}'\n\n"
+    # Exercise 2: /even-numbers
+    exercises_code += (
+        "def even_numbers_route():\n"
+        "    evens = [str(i) for i in range(1, 21) if i % 2 == 0]\n"
+        "    return 'Even numbers: ' + ', '.join(evens)\n\n"
+        "routes['/even-numbers'] = even_numbers_route\n\n"
+    )
 
-    # Exercise 3: sum of numbers until 0
-    total = 0
-    while True:
-        n = int(input("Exercise 3 - Enter a number (0 to stop): "))
-        if n == 0:
-            break
-        total += n
-    exercises_code += f"def exercise2_3():\n    return 'Sum: {total}'\n\n"
+    # Exercise 3: /sum-until/<n>
+    exercises_code += (
+        "def sum_until_route(n):\n"
+        "    n = int(n)\n"
+        "    total = 0\n"
+        "    for i in range(1, n+1):\n"
+        "        total += i\n"
+        "    return f'Sum: {total}'\n\n"
+        "routes['/sum-until/<n>'] = sum_until_route\n\n"
+    )
 
     # Append or update the exercises in webapp/routes.py
     with open("webapp/routes.py", "r") as f:
