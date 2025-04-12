@@ -58,16 +58,16 @@ def outer():
 
 outer()
 
-# --- Exercises ---
+# --- Exercises: Build the Webapp with Functions ---
 
 # Exercise 1:
-# Write a function `is_even(n)` that returns True if n is even, False otherwise.
+# Add a route /is-even/<n> that returns "Even" or "Odd" based on whether n is even.
 
 # Exercise 2:
-# Write a function `factorial(n)` that returns the factorial of n.
+# Add a route /factorial/<n> that returns the factorial of n.
 
 # Exercise 3:
-# Write a function `greet_user()` that asks the user for their name and prints a greeting.
+# Add a route /greet-user/<name> that returns a personalized greeting.
 
 # In the next chapter, we'll explore functional programming concepts like lambdas, map, filter, reduce, and the Walrus operator!
 
@@ -76,32 +76,30 @@ outer()
 def save_exercises_to_webapp():
     exercises_code = "\n# --- Chapter 3 User Exercises ---\n"
 
-    # Exercise 1: is_even
-    def is_even(n):
-        return n % 2 == 0
-
+    # Exercise 1: /is-even/<n>
     exercises_code += (
-        "def exercise3_1(n):\n"
+        "def is_even_route(n):\n"
+        "    n = int(n)\n"
         "    return 'Even' if n % 2 == 0 else 'Odd'\n\n"
+        "routes['/is-even/<n>'] = is_even_route\n\n"
     )
 
-    # Exercise 2: factorial
-    def factorial(n):
-        return 1 if n == 0 else n * factorial(n - 1)
-
+    # Exercise 2: /factorial/<n>
     exercises_code += (
-        "def exercise3_2(n):\n"
+        "def factorial_route(n):\n"
+        "    n = int(n)\n"
         "    result = 1\n"
         "    for i in range(1, n + 1):\n"
         "        result *= i\n"
         "    return f'Factorial: {result}'\n\n"
+        "routes['/factorial/<n>'] = factorial_route\n\n"
     )
 
-    # Exercise 3: greet_user
-    name = input("Exercise 3 - Enter your name: ")
+    # Exercise 3: /greet-user/<name>
     exercises_code += (
-        f"def exercise3_3():\n"
-        f"    return 'Hello, {name}!'\n\n"
+        "def greet_user_route(name):\n"
+        "    return f'Hello, {name}!'\n\n"
+        "routes['/greet-user/<name>'] = greet_user_route\n\n"
     )
 
     # Append or update the exercises in webapp/routes.py
