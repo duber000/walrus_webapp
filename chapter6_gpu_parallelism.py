@@ -80,16 +80,16 @@ print(handle_request("/"))
 print(handle_request("/gpu-sum"))
 print(handle_request("/missing"))
 
-# --- Exercises ---
+# --- Exercises: Build the Webapp with GPU Parallelism ---
 
 # Exercise 1:
-# Write a GPU kernel that multiplies two arrays element-wise.
+# Add a GPU kernel that multiplies two arrays element-wise.
 
 # Exercise 2:
-# Modify the mini web framework to add a new route that uses your GPU multiplication kernel.
+# Add a /gpu-multiply route that uses your GPU multiplication kernel and returns the result.
 
 # Exercise 3:
-# Benchmark the GPU sum against a CPU sum using NumPy and compare the results.
+# Add a /gpu-vs-cpu-benchmark route that benchmarks GPU sum vs CPU sum and returns the timing.
 
 # Congratulations! You've reached the final chapter of this course.
 # You now have a basic web framework that uses variables, control flow, functions, functional programming,
@@ -100,22 +100,50 @@ print(handle_request("/missing"))
 def save_exercises_to_webapp():
     exercises_code = "\n# --- Chapter 6 User Exercises ---\n"
 
-    # Exercise 1: GPU multiply kernel (simulate output)
+    # Exercise 1: GPU multiply kernel
     exercises_code += (
-        "def exercise6_1():\n"
-        "    return 'GPU multiplied arrays'\n\n"
+        "from numba import cuda\n"
+        "import numpy as np\n"
+        "\n"
+        "@cuda.jit\n"
+        "def multiply_arrays_kernel(a, b, result):\n"
+        "    idx = cuda.grid(1)\n"
+        "    if idx < a.size:\n"
+        "        result[idx] = a[idx] * b[idx]\n\n"
     )
 
-    # Exercise 2: new GPU route (simulate output)
+    # Exercise 2: /gpu-multiply route
     exercises_code += (
-        "def exercise6_2():\n"
-        "    return 'GPU multiplication route added'\n\n"
+        "def gpu_multiply_route():\n"
+        "    N = 16\n"
+        "    a = np.arange(N, dtype=np.float32)\n"
+        "    b = np.arange(N, dtype=np.float32)\n"
+        "    result = np.zeros(N, dtype=np.float32)\n"
+        "    threads_per_block = 8\n"
+        "    blocks_per_grid = (N + threads_per_block - 1) // threads_per_block\n"
+        "    multiply_arrays_kernel[blocks_per_grid, threads_per_block](a, b, result)\n"
+        "    return 'GPU multiply result: ' + str(result.tolist())\n\n"
+        "routes['/gpu-multiply'] = gpu_multiply_route\n\n"
     )
 
-    # Exercise 3: benchmark results (simulate output)
+    # Exercise 3: /gpu-vs-cpu-benchmark route
     exercises_code += (
-        "def exercise6_3():\n"
-        "    return 'GPU sum faster than CPU sum'\n\n"
+        "import time\n"
+        "def gpu_vs_cpu_benchmark_route():\n"
+        "    N = 1000000\n"
+        "    a = np.arange(N, dtype=np.float32)\n"
+        "    b = np.arange(N, dtype=np.float32)\n"
+        "    result_gpu = np.zeros(N, dtype=np.float32)\n"
+        "    threads_per_block = 256\n"
+        "    blocks_per_grid = (N + threads_per_block - 1) // threads_per_block\n"
+        "    start_gpu = time.time()\n"
+        "    add_arrays_kernel[blocks_per_grid, threads_per_block](a, b, result_gpu)\n"
+        "    gpu_time = time.time() - start_gpu\n"
+        "    start_cpu = time.time()\n"
+        "    result_cpu = a + b\n"
+        "    cpu_time = time.time() - start_cpu\n"
+        "    return f'GPU time: {gpu_time:.6f}s, CPU time: {cpu_time:.6f}s'\n\n"
+        "routes['/gpu-vs-cpu-benchmark'] = gpu_vs_cpu_benchmark_route\n\n"
     )
 
     # Append or update the exercises in webapp/routes.py
