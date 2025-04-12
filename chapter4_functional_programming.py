@@ -92,16 +92,16 @@ print(handle_request("/active-usernames"))
 print(handle_request("/total-age"))
 print(handle_request("/count-active"))
 
-# --- Exercises ---
+# --- Exercises: Build the Webapp with Functional Programming ---
 
 # Exercise 1:
-# Use map() and a lambda to convert a list of temperatures in Celsius to Fahrenheit.
+# Add a route /celsius-to-fahrenheit that returns a list of Celsius temperatures converted to Fahrenheit.
 
 # Exercise 2:
-# Use filter() and a lambda to get all words longer than 5 letters from a list of words.
+# Add a route /long-words that returns all words longer than 5 letters from a list.
 
 # Exercise 3:
-# Use reduce() to multiply all numbers in a list.
+# Add a route /product that returns the product of numbers in a list.
 
 # Next chapter: Multithreading!
 
@@ -110,29 +110,32 @@ print(handle_request("/count-active"))
 def save_exercises_to_webapp():
     exercises_code = "\n# --- Chapter 4 User Exercises ---\n"
 
-    # Exercise 1: Celsius to Fahrenheit
-    celsius_list = [0, 10, 20, 30]
-    fahrenheit_list = list(map(lambda c: c * 9/5 + 32, celsius_list))
+    # Exercise 1: /celsius-to-fahrenheit
     exercises_code += (
-        f"def exercise4_1():\n"
-        f"    return 'Fahrenheit: {fahrenheit_list}'\n\n"
+        "def celsius_to_fahrenheit_route():\n"
+        "    celsius_list = [0, 10, 20, 30]\n"
+        "    fahrenheit_list = list(map(lambda c: c * 9/5 + 32, celsius_list))\n"
+        "    return 'Fahrenheit: ' + str(fahrenheit_list)\n\n"
+        "routes['/celsius-to-fahrenheit'] = celsius_to_fahrenheit_route\n\n"
     )
 
-    # Exercise 2: words longer than 5 letters
-    words = ["apple", "banana", "cherry", "date", "elderberry"]
-    long_words = list(filter(lambda w: len(w) > 5, words))
+    # Exercise 2: /long-words
     exercises_code += (
-        f"def exercise4_2():\n"
-        f"    return 'Long words: {long_words}'\n\n"
+        "def long_words_route():\n"
+        "    words = ['apple', 'banana', 'cherry', 'date', 'elderberry']\n"
+        "    long_words = list(filter(lambda w: len(w) > 5, words))\n"
+        "    return 'Long words: ' + str(long_words)\n\n"
+        "routes['/long-words'] = long_words_route\n\n"
     )
 
-    # Exercise 3: product of numbers
-    from functools import reduce
-    nums = [1, 2, 3, 4, 5]
-    product = reduce(lambda x, y: x * y, nums)
+    # Exercise 3: /product
     exercises_code += (
-        f"def exercise4_3():\n"
-        f"    return 'Product: {product}'\n\n"
+        "def product_route():\n"
+        "    from functools import reduce\n"
+        "    nums = [1, 2, 3, 4, 5]\n"
+        "    product = reduce(lambda x, y: x * y, nums)\n"
+        "    return f'Product: {product}'\n\n"
+        "routes['/product'] = product_route\n\n"
     )
 
     # Append or update the exercises in webapp/routes.py
